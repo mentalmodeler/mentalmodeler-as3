@@ -13,11 +13,14 @@ package com.jonnybomb.ui.components
 	import flash.filters.BitmapFilterType;
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Rectangle;
+	import flash.utils.setTimeout;
 	
 	public class Slider extends Sprite
 	{
 		public static const CONTINUOUS:int = 0;
 		public static const NOTCHED:int = 1;
+		public static const HORZ:int = 0;
+		public static const VERT:int = 1;
 		public static const BG_BEVEL:BevelFilter = new BevelFilter(1, 270, 0xFFFFFF, 1, 0x000000, 1, 1, 1, 1, BitmapFilterQuality.LOW, BitmapFilterType.INNER, false);
 		public static const BG_DS:DropShadowFilter = new DropShadowFilter(2, 90, 0x000000, 1, 5, 5, 0.5, BitmapFilterQuality.MEDIUM, true);
 		
@@ -38,6 +41,7 @@ package com.jonnybomb.ui.components
 		private var _styles:Object;
 		private var _dragBounds:Rectangle;
 		private var _bgHeightPct:Number = 0.25;
+		private var _orientation:int;
 		
 		private var _snapToData:Vector.<Object>;
 		private var _snapToValue:Object;
@@ -48,62 +52,99 @@ package com.jonnybomb.ui.components
 		private var _value:Number = 0;
 		public function get value():Number { return _value; }
 		
-		public function Slider(width:int, height:int, type:int, values:Object, styles:Object)
+		public function Slider(width:int, height:int, type:int, values:Object, styles:Object, orientation:int = HORZ)
 		{
 			_width = width;
 			_height = height;
 			_type = type;
 			_values = values;
 			_styles = styles;
-			
+			_orientation = orientation;
+			trace('_values.min:'+_values.min+', _values.max:'+_values.max+', _values.init:'+_values.init+', _orientation:'+_orientation);;
 			init();
 		}
 		
 		public function init():void
 		{
-			//draw bg
-			_bg = addChild(new Sprite()) as Sprite;
-			DrawingUtil.drawRect(_bg, _width, Math.round(_height * _bgHeightPct), _styles.bg, 0, 0); //_styles.ellipse);
-			_bg.filters = [BG_DS];
-			_bg.y = (_height - _bg.height) / 2;
-			
-			// draw handle
-			_handle = addChild(new SliderHandle(10, _height, _styles)) as SliderHandle;
-			_dragBounds = new Rectangle(0, 0, _width - _handle.width, 0);
-			
-			//draw hit
-			_hit = addChild(new Sprite()) as Sprite;
-			var g:Graphics = _hit.graphics;
-			g.beginFill(0xFF0000, 0);
-			g.drawRect(0, 0, _width, _height);
-			g.endFill();
-			
-			if (_type == NOTCHED)
-			{
-				_intervalLines = addChildAt(new Sprite(), 0) as Sprite;
-				_snapToData = new <Object>[];
-				var intValue:Number = (_values.max - _values.min) / _values.numInt;
-				var intPixel:Number = (_width - _handle.width) / _values.numInt ;
-				for (var i:int=0; i<=_values.numInt; i++)
+			if ( _orientation === Slider.VERT ) {
+				//draw bg
+				_bg = addChild(new Sprite()) as Sprite;
+				DrawingUtil.drawRect(_bg, Math.round(_width * _bgHeightPct), _height, _styles.bg, 0, 0); //_styles.ellipse);
+				_bg.filters = [BG_DS];
+				_bg.x = (_width - _bg.width) / 2;
+				
+				// draw handle
+				_handle = addChild(new SliderHandle(_width, 10, _styles, _orientation)) as SliderHandle;
+				_dragBounds = new Rectangle(0, 0, 0, _height - _handle.height);
+				//_handle.y = (_height - _handle.height) * 0.5;
+				
+				//draw hit
+				_hit = addChild(new Sprite()) as Sprite;
+				var g:Graphics = _hit.graphics;
+				g.beginFill(0xFF0000, 0);
+				g.drawRect(0, 0, _width, _height);
+				g.endFill();
+				
+				if (_type == NOTCHED)
 				{
-					var value:Number = _values.min + intValue*i;
-					var pixel:Number = Math.round(_handle.width/2 + intPixel*i);
-					var pct:Number = i/_values.numInt;
-					//trace(i+" >> value:"+value+", pixel:"+pixel+", pct:"+pct);
-					_snapToData.push( {value:value, pixel:pixel, pct:pct} );
-					drawIntervalLine(pixel);
+					_intervalLines = addChildAt(new Sprite(), 0) as Sprite;
+					_snapToData = new <Object>[];
+					var intValue:Number = (_values.max - _values.min) / _values.numInt;
+					var intPixel:Number = (_height - _handle.height) / _values.numInt ;
+					for (var i:int=0; i<=_values.numInt; i++)
+					{
+						var value:Number = _values.min + intValue*i;
+						var pixel:Number = Math.round(_handle.height/2 + intPixel*i);
+						var pct:Number = i/_values.numInt;
+						_snapToData.push( {value:value, pixel:pixel, pct:pct} );
+						drawIntervalLine(pixel);
+					}
+				}
+			} else {
+				//draw bg
+				_bg = addChild(new Sprite()) as Sprite;
+				DrawingUtil.drawRect(_bg, _width, Math.round(_height * _bgHeightPct), _styles.bg, 0, 0); //_styles.ellipse);
+				_bg.filters = [BG_DS];
+				_bg.y = (_height - _bg.height) / 2;
+				
+				// draw handle
+				_handle = addChild(new SliderHandle(10, _height, _styles, _orientation)) as SliderHandle;
+				_dragBounds = new Rectangle(0, 0, _width - _handle.width, 0);
+				
+				//draw hit
+				_hit = addChild(new Sprite()) as Sprite;
+				var g:Graphics = _hit.graphics;
+				g.beginFill(0xFF0000, 0);
+				g.drawRect(0, 0, _width, _height);
+				g.endFill();
+				
+				if (_type == NOTCHED)
+				{
+					_intervalLines = addChildAt(new Sprite(), 0) as Sprite;
+					_snapToData = new <Object>[];
+					var intValue:Number = (_values.max - _values.min) / _values.numInt;
+					var intPixel:Number = (_width - _handle.width) / _values.numInt ;
+					for (var i:int=0; i<=_values.numInt; i++)
+					{
+						var value:Number = _values.min + intValue*i;
+						var pixel:Number = Math.round(_handle.width/2 + intPixel*i);
+						var pct:Number = i/_values.numInt;
+						_snapToData.push( {value:value, pixel:pixel, pct:pct} );
+						drawIntervalLine(pixel);
+					}
 				}
 			}
-			
-			if (_values.init)
+			//trace('---- _values.init:'+_values.init+', width:'+width);
+			if (_values.init === 0 || _values.init) {	
 				setValue(_values.init);
+			}
 			
 			mouseChildren = false;
 			buttonMode = true;
 			enabled = true;
 		}
 		
-		public function setValue(value:Number, dispatchChange:Boolean = true):void { updateProgressDisplay( (value - _values.min) / (_values.max - _values.min), dispatchChange ); }
+		public function setValue(value:Number, dispatchChange:Boolean = true):void { trace('setValue, value:'+value); updateProgressDisplay( (value - _values.min) / (_values.max - _values.min), dispatchChange ); }
 		public function setPct(pct:Number, dispatchChange:Boolean = true):void { updateProgressDisplay(pct, dispatchChange); }
 		
 		public function set enabled(value:Boolean):void
@@ -130,19 +171,37 @@ package com.jonnybomb.ui.components
 		
 		private function drawIntervalLine(pixel:Number):void
 		{
-			var w:int = 2;
-			var g:Graphics = _intervalLines.graphics;
-			g.beginFill(_styles.bgColor);
-			g.drawRect(Math.round(pixel-w/2), 0, w, _height);
-			g.endFill();
+			if (_orientation === VERT) {
+				var h:int = 1;
+				var g:Graphics = _intervalLines.graphics;
+				g.beginFill(_styles.bgColor);
+				g.drawRect(_width * .25, Math.round(pixel-h/2), _width * .5, h);
+				g.endFill();
+			} else {
+				var w:int = 2;
+				var g:Graphics = _intervalLines.graphics;
+				g.beginFill(_styles.bgColor);
+				g.drawRect(Math.round(pixel-w/2), 0, w, _height);
+				g.endFill();	
+			}
 		}
 		
 		private function placeHandle(pct:Number):void
 		{
-			var pixel:Number = _bg.x + (_bg.width - _handle.width) * pct;
-			if (_type == NOTCHED && _snapToValue)
-				pixel = _snapToValue.pixel - _handle.width/2;
-			_handle.x = pixel;
+			//trace('placeHandle, pct:'+pct);
+			if (_orientation === VERT) {
+				var pixel:Number = _bg.y + (_bg.height - _handle.height) * pct;
+				if (_type == NOTCHED && _snapToValue)
+					pixel = _snapToValue.pixel - _handle.height/2;
+				_handle.y = pixel;
+//				trace('placeHandle, pct:'+pct+', pixel:'+pixel+', _handle.y:'+_handle.y+', _bg.height:'+_bg.height+', _handle.height:'+_handle.height);
+			} else {
+				var pixel:Number = _bg.x + (_bg.width - _handle.width) * pct;
+				if (_type == NOTCHED && _snapToValue)
+					pixel = _snapToValue.pixel - _handle.width/2;
+				_handle.x = pixel;
+//				trace('placeHandle, pct:'+pct+', pixel:'+pixel+', _handle.x:'+_handle.x+', _bg.width:'+_bg.width+', _handle.width:'+_handle.width);
+			}
 		}
 		
 		private function update():void
@@ -152,6 +211,7 @@ package com.jonnybomb.ui.components
 		
 		private function updateProgressDisplay(percent:Number = -1, dispatchChange:Boolean = true):void
 		{
+//			trace('updateProgressDisplay, percent:'+percent);
 			if (percent == -1) // user is dragging the slider
 				updateProgressPct();
 			else 
@@ -166,26 +226,43 @@ package com.jonnybomb.ui.components
 		
 		private function updateProgressPct(percent:Number = -1, dispatchChange:Boolean = true):void
 		{
-			if (percent != -1)
+//			trace('_orientation:'+_orientation+', _orientation === VERT :'+(_orientation === Slider.VERT ));
+			if (percent != -1) {
 				_pct = percent;
-			else
-				_pct = (mouseX - _bg.x) / (_bg.width - _handle.width);
+			}
+			else {
+				if (_orientation === Slider.VERT ) {
+					_pct = (mouseY - _bg.y) / (_bg.height - _handle.height);
+				} else {
+					_pct = (mouseX - _bg.x) / (_bg.width - _handle.width);
+				}
+			}
 			
 			_pct = (_pct < 0) ? 0 : (_pct > 1) ? 1 : _pct;
-			_snapToValue = _snapToData[ getClosetIdx(_pct, _snapToData, "pct", _handle.width/2) ];
+			if (_type == NOTCHED) {
+				_snapToValue = _snapToData[ getClosetIdx(_pct, _snapToData, "pct", _handle.width/2) ];
+				//for (var key:String in _snapToValue) { trace('_snapToValue['+key+']:'+_snapToValue[key]); }
+			}
 			
 			calculateValue(_pct);
 			
-			if (!_isDragging && dispatchChange)
+			if (/*!_isDragging && */dispatchChange)
 				dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		private function calculateValue(pct:Number):void
 		{
-			if (_type == NOTCHED && _snapToValue)
+			if (_type == NOTCHED && _snapToValue) {
 				_value = _snapToValue.value;
-			else
-				_value = _values.min + (_values.max - _values.min) * _pct; 
+			}
+			else {
+				if (_orientation === Slider.VERT) {
+					_value = 0 - (_values.min + (_values.max - _values.min) * _pct);
+				} else {
+					_value = _values.min + (_values.max - _values.min) * _pct;
+				}
+			}
+//			trace('calculateValue, pct:'+pct+', _value:'+_value);
 			/*
 			if (customCalcValue != null)
 				value = customCalcValue(pct);
@@ -279,6 +356,7 @@ package com.jonnybomb.ui.components
 		private function isCloser(value:Number, first:Number, second:Number):Boolean { return (Math.abs(value - first) <= Math.abs(value - second)); }
 	}
 }
+import com.jonnybomb.ui.components.Slider;
 import com.jonnybomb.ui.utils.DrawingUtil;
 
 import flash.display.Sprite;
@@ -300,12 +378,14 @@ class SliderHandle extends Sprite
 	private var _width:int;
 	private var _height:int;
 	private var _styles:Object;
+	private var _orientation:Object;
 	
-	public function SliderHandle(width:int, height:int, styles:Object)
+	public function SliderHandle(width:int, height:int, styles:Object, orientation:int)
 	{
 		_width = width;
 		_height = height;
 		_styles = styles;
+		_orientation = orientation;
 		
 		init();
 	}
