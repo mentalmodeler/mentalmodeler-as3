@@ -1,12 +1,17 @@
 package com.jonnybomb.mentalmodeler.controller
 {
 	import com.adobe.images.PNGEncoder;
-	
+	import com.jonnybomb.mentalmodeler.CMapConstants;
+	import com.jonnybomb.mentalmodeler.MentalModeler;
+	import com.jonnybomb.mentalmodeler.display.controls.ConceptsContainer;
 	import com.jonnybomb.mentalmodeler.display.controls.alert.Alert;
 	import com.jonnybomb.mentalmodeler.display.controls.alert.AlertContentDefault;
+	import com.jonnybomb.mentalmodeler.model.CMapModel;
 	
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.display.StageDisplayState;
 	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -15,9 +20,6 @@ package com.jonnybomb.mentalmodeler.controller
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.utils.ByteArray;
-	
-	import com.jonnybomb.mentalmodeler.model.CMapModel;
-	import com.jonnybomb.mentalmodeler.CMapConstants;
 	
 	public class IOController extends EventDispatcher
 	{
@@ -49,19 +51,29 @@ package com.jonnybomb.mentalmodeler.controller
 			{
 				Alert.show(new AlertContentDefault(CMapConstants.MESSAGE_SCREENSHOT_SELECT), null);
 				
-				var w:int = Math.max(_controller.maxW, _controller.stage.stageWidth);
-				var h:int = Math.max(_controller.maxH, _controller.stage.stageHeight);
+				var container:ConceptsContainer = _controller.container as ConceptsContainer;
+				var content:Sprite = container.content;
+				var contentMask:Sprite = content.mask as Sprite;
+				content.mask = null;
+				
+				//var w:int = Math.max(_controller.maxW, _controller.stage.stageWidth);
+				//var h:int = Math.max(_controller.maxH, _controller.stage.stageHeight);
+				var w:int = content.width;
+				var h:int = content.height;
 				var bmd:BitmapData = new BitmapData(w, h, true, 0);
-				var g:Graphics = _controller.container.graphics;
+				var g:Graphics = content.graphics;
+				//var g:Graphics = _controller.container.graphics;
 				g.beginFill(0xFFFFFF, 1);
 				g.drawRect(0, 0, w, h);
 				g.endFill();
-				_controller.container
-				bmd.draw(_controller.container);
+				bmd.draw(content);
+				//_controller.container
+				//bmd.draw(_controller.container);
 				g.clear();
 				var byteArray:ByteArray = PNGEncoder.encode(bmd);
 				_fileRef.save(byteArray, ".png");
 				
+				content.mask = contentMask;
 			}
 			catch (e:IllegalOperationError)
 			{

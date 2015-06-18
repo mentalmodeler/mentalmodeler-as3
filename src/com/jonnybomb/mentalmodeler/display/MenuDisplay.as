@@ -7,13 +7,16 @@ package com.jonnybomb.mentalmodeler.display
 	import com.jonnybomb.mentalmodeler.events.ControllerEvent;
 	import com.jonnybomb.mentalmodeler.model.CMapModel;
 	import com.jonnybomb.mentalmodeler.utils.displayobject.DisplayObjectUtil;
+	import com.jonnybomb.mentalmodeler.utils.visual.DrawingUtil;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.events.FullScreenEvent;
 	import flash.events.MouseEvent;
 	import flash.filters.DropShadowFilter;
 	import flash.geom.Rectangle;
@@ -32,9 +35,11 @@ package com.jonnybomb.mentalmodeler.display
 		private var _save:UIButton;
 		private var _export:UIButton;
 		private var _screenshot:UIButton;
+		private var _fullscreen:UIButton;
 		private var _logo:TextField;
 		private var _holder:Sprite;
 		private var _canSaveLoadExport:Boolean = true;
+		private var _hasScreenshotAndFullscreen:Boolean = true;
 		
 		public function MenuDisplay(controller:CMapController)
 		{
@@ -42,7 +47,9 @@ package com.jonnybomb.mentalmodeler.display
 			_controller.addEventListener(ControllerEvent.DISABLE_ADD_NODE, handleToggleAddEnabled, false, 0, true);
 			_controller.addEventListener(ControllerEvent.ENABLE_ADD_NODE, handleToggleAddEnabled, false, 0, true);
 			
-			_canSaveLoadExport = _controller.model.canSaveAndLoad
+			_canSaveLoadExport = _controller.model.canSaveAndLoad;
+			_hasScreenshotAndFullscreen = _controller.model.hasScreenshotAndFullscreen;
+			trace('_hasScreenshotAndFullscreen:'+_hasScreenshotAndFullscreen);
 			
 			if (stage)
 				init();
@@ -82,6 +89,9 @@ package com.jonnybomb.mentalmodeler.display
 			_bg.width = stage.stageWidth;
 			var startX:Number = _logo ? _logo.x + _logo.width : 0;
 			
+			var addW:Number;
+			var label:DisplayObject;
+			
 			if (_canSaveLoadExport)
 			{
 				if (stage.stageWidth < startX + _add.width + _holder.width + 5)
@@ -96,12 +106,25 @@ package com.jonnybomb.mentalmodeler.display
 				}
 				_controller.addX = _add.x + _add.width/2 - CMapConstants.NOTES_WIDTH;
 			}
+			else if (_hasScreenshotAndFullscreen) {
+				var fullscreen:Boolean = _controller.isFullScreenEnabledAndFullScreen(); //MentalModeler.FULL_SCREEN && stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				var notesWidth:Number = fullscreen ? 0 : CMapConstants.NOTES_WIDTH;
+				addW = stage.stageWidth - notesWidth - _holder.width;
+				_add.setSize(addW);
+				label = _add.label;
+				label.x = (addW - label.width)/2;
+				label.y = (CMapConstants.MENU_HEIGHT - label.height)/2;
+				_bg.width = stage.stageWidth - notesWidth;
+				_add.x = _bg.x = notesWidth;
+				_controller.addX = _add.x + addW/2  - notesWidth; // - CMapConstants.CD_WIDTH/2 - CMapConstants.CD_ADD_POS_OFFSET;
+				_holder.x = _add.x + addW + 1;
+			}
 			else
 			{
 				//_add.x = stage.stageWidth - _add.width - 1;
-				var addW:Number = stage.stageWidth - CMapConstants.NOTES_WIDTH;
+				addW = stage.stageWidth - CMapConstants.NOTES_WIDTH;
 				_add.setSize(addW, CMapConstants.MENU_HEIGHT);
-				var label:DisplayObject = _add.label;
+				label = _add.label;
 				label.x = (addW - label.width)/2;
 				label.y = (CMapConstants.MENU_HEIGHT - label.height)/2;
 				//_add.x = (stage.stageWidth - _add.width)/2;
@@ -134,8 +157,19 @@ package com.jonnybomb.mentalmodeler.display
 		private function handleToggleAddEnabled(e:ControllerEvent):void { toggleAddEnabled(e.type == ControllerEvent.ENABLE_ADD_NODE); }
 		private function handleClickMouseDown(e:Event):void { _controller.addNewConcept(); }
 		
+		private function toggleFullscreen(e:Event):void {
+			var expand:Boolean = _controller.isFullScreen(); //stage.displayState == StageDisplayState.FULL_SCREEN; //_INTERACTIVE;
+			trace("toggleFullscreen, e:"+e+", expand:"+expand);
+			_fullscreen.clearLabel();
+			var label:Sprite = createFullscreenLabel(!expand);
+			label.x = (_fullscreen.width - label.width) / 2;
+			label.y = (_fullscreen.height - label.height) / 2;
+			_fullscreen.addLabel(label);
+		}
+		
 		private function init():void
 		{
+			stage.addEventListener(FullScreenEvent.FULL_SCREEN, toggleFullscreen, false, 0, true);
 			_bg = addBG();
 			//_bgBlack = addBG(0x121212);
 			//_bgBlack.width = CMapConstants.NOTES_WIDTH;
@@ -143,6 +177,7 @@ package com.jonnybomb.mentalmodeler.display
 			_holder = addChild(new Sprite()) as Sprite;
 			var spacer:int = 1;
 			_add = addChild(createButton(createAddLabel())) as UIButton;
+			//_add.visible = _holder.visible = _bg.visible = false;
 			toggleAddEnabled(false);
 			if (_canSaveLoadExport)
 			{
@@ -166,6 +201,13 @@ package com.jonnybomb.mentalmodeler.display
 				_export.x = _screenshot.x + _screenshot.width + spacer;
 				_export.enabled = false;
 				*/
+			}
+			else if (_hasScreenshotAndFullscreen) {
+				_screenshot = _holder.addChild(createButton(createScreenshotIcon()/*"SCREENSHOT"*/)) as UIButton;
+				_screenshot.addEventListener(MouseEvent.CLICK, handleClickScreenshot, false, 0, true);
+				_fullscreen = _holder.addChild(createButton(createFullscreenLabel(true))) as UIButton; ///*"TOGGLE FULLSCREEN"*/
+				_fullscreen.addEventListener(MouseEvent.CLICK, handleClickFullscreen, false, 0, true);
+				_fullscreen.x = _screenshot.x + _screenshot.width + spacer;
 			}
 			
 			_controller.addEventListener(ControllerEvent.STAGE_RESIZE, handleResize, false, 0, true);
@@ -197,13 +239,39 @@ package com.jonnybomb.mentalmodeler.display
 			_controller.saveScreenshot();
 		}
 		
+		private function handleClickFullscreen(e:Event):void
+		{
+			_controller.toggleFullscreen();
+		}
+		
 		private function handleClickExport(e:Event):void
 		{
 		}
 		
+		private function createFullscreenLabel(expand:Boolean):Sprite {
+			var r:Rectangle = new Rectangle(0, 0, CMapConstants.MENU_HEIGHT * 0.8, CMapConstants.MENU_HEIGHT * 0.6);
+			var iconSide:int = 6;
+			var s:Sprite = DrawingUtil.drawFullscreenToggleIcon(expand, r, iconSide, 0xffffff);
+			return s;
+		}
+		
+		private function createScreenshotIcon():Sprite {
+			var r:Rectangle = new Rectangle(0, 0, CMapConstants.MENU_HEIGHT * 0.8, CMapConstants.MENU_HEIGHT * 0.6);
+			var s:Sprite = DrawingUtil.drawCameraIcon(r);
+			return s;
+		}
 		private function createAddLabel():Sprite
 		{
-			var sp:Sprite  = new Sprite;
+			/*
+			var spr:Sprite = createFullscreenLabel(false);
+			spr.x = spr.y = 200;
+			stage.addChild( spr );
+			spr = createFullscreenLabel(true);
+			spr.x = spr.y = 300;
+			stage.addChild( spr );
+			*/
+			
+			var sp:Sprite  = new Sprite();
 			var rad:int = CMapConstants.MENU_HEIGHT * 0.33; //0.38;
 			var side:int = CMapConstants.MENU_HEIGHT * 0.40; //0.55;
 			var thickness:int = CMapConstants.MENU_HEIGHT * 0.12;
@@ -254,9 +322,11 @@ package com.jonnybomb.mentalmodeler.display
 			}
 			else if (label is DisplayObject)
 			{
+				
 				label.x = padding;
 				label.y = (CMapConstants.MENU_HEIGHT - label.height) / 2 + 1;
 				label.filters = [CMapConstants.INSET_BEVEL];
+				/*
 				if (!_canSaveLoadExport) // make the add button big
 				{
 					var w:int = _controller.stage.stageWidth - CMapConstants.NOTES_WIDTH;
@@ -264,6 +334,7 @@ package com.jonnybomb.mentalmodeler.display
 					label.x = (w - label.width)/2;
 				}
 				else
+				*/
 					props[UIButton.WIDTH] = label.width + padding*2;
 			}
 			var buttonLabel:DisplayObject = (label is String) ? tf : label;

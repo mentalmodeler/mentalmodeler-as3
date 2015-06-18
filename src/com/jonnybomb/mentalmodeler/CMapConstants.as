@@ -69,8 +69,7 @@ package com.jonnybomb.mentalmodeler
 		public static const UNITS_PREFILL_TEXT:String = "Enter unit of measurement";
 		public static const ADD_NODE_LABEL:String = "ADD COMPONENT";
 		
-		public static const CONFIDENCE_VALUES:Object = { min:-2, max:2, init:1, numInt:6 };
-		public static const INFLUENCE_LINE_VALUES:Object = { min:-1, max:1, init:0, numInt:20 };
+		public static const CONFIDENCE_VALUES:Object = { min:-2, max:2, init:0, numInt:6 };
 		
 		public static const ADD_BUTTON_POS_PADDING:int = 20;
 		public static const CD_POS_START_PCT:Number = 0.8;

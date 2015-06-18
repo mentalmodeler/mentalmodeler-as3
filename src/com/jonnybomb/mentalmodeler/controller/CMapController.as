@@ -2,6 +2,7 @@ package com.jonnybomb.mentalmodeler.controller
 {
 	import com.jonnybomb.mentalmodeler.CMapConstants;
 	import com.jonnybomb.mentalmodeler.MentalModeler;
+	import com.jonnybomb.mentalmodeler.controller.IOController;
 	import com.jonnybomb.mentalmodeler.display.ConceptDisplay;
 	import com.jonnybomb.mentalmodeler.display.InfluenceLineDisplay;
 	import com.jonnybomb.mentalmodeler.display.LineValueMenuDisplay;
@@ -24,6 +25,7 @@ package com.jonnybomb.mentalmodeler.controller
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -106,14 +108,15 @@ package com.jonnybomb.mentalmodeler.controller
 			if (ExternalInterface.available)
 			{
 				//Alert.show(new AlertContentDefault("External Interface is available", "OK", false), null);	
-				ExternalInterface.addCallback("doLoad", eiDoLoad);
-				ExternalInterface.addCallback("doSave", eiDoSave);
+				flash.external.ExternalInterface.addCallback("doLoad", eiDoLoad);
+				flash.external.ExternalInterface.addCallback("doSave", eiDoSave);
 				ExternalInterface.call("flashInitialized");
 			}
 			else if (!model.canSaveAndLoad)
-				//Alert.show(new AlertContentDefault("External Interface not available", "OK", false), null);	
+				Alert.show(new AlertContentDefault("External Interface not available", "OK", false), null);	
 			
 			updateHTMLSize(CMapConstants.WIDTH_START, CMapConstants.HEIGHT_START);
+			//flash.external.ExternalInterface.call("flashInitialized");
 		}
 		
 		public function addDebug():void
@@ -154,7 +157,6 @@ package com.jonnybomb.mentalmodeler.controller
 				dispatchEvent( new ControllerEvent(ControllerEvent.UPDATE_POSITIONS, {w:w, h:h}) );
 			else if (ExternalInterface.available)
 				ExternalInterface.call("updateFlashSize", w, h);
-			
 		}
 		
 		public function get rect():Rectangle { return _rect ? _rect.clone() : null; }
@@ -217,7 +219,7 @@ package com.jonnybomb.mentalmodeler.controller
 			//Alert.show(new AlertContentDefault(CMapConstants.MESSAGE_LOAD_OVERWRITE, "LOAD FILE", true), doLoadMap);
 		}
 		public function saveMap():void { Alert.show(new AlertContentDetails(), doSaveMap); }
-		public function saveScreenshot():void { Alert.show(new AlertContentDetails(), doSaveScreenshot); }
+		public function saveScreenshot():void { doSaveScreenshot();/*Alert.show(new AlertContentDetails(), doSaveScreenshot);*/ }
 		public function doLoadMap():void { _io.loadFileRef(); }
 		public function doSaveMap():void { _io.saveFileRef(); }
 		public function doSaveScreenshot():void { _io.savePNG(); }
@@ -787,6 +789,28 @@ package com.jonnybomb.mentalmodeler.controller
 			_tempLineArrowhead = null
 			_rect = null;
 			_bounds = null;
+		}
+		
+		public function toggleFullscreen():void {
+			if (stage.displayState == StageDisplayState.NORMAL) {
+				//var rect:Rectangle = new Rectangle(CMapConstants.NOTES_WIDTH, 0, stage.stageWidth - CMapConstants.NOTES_WIDTH, stage.stageHeight);
+				//stage.fullScreenSourceRect = rect;
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+			} else {
+				stage.displayState = StageDisplayState.NORMAL;
+			}
+		}
+		
+		public function isFullScreen():Boolean {
+			return stage.displayState === StageDisplayState.FULL_SCREEN || stage.displayState === StageDisplayState.FULL_SCREEN_INTERACTIVE; 
+		}
+		
+		public function isFullScreenEnabled():Boolean {
+			return MentalModeler.FULL_SCREEN;
+		}
+		
+		public function isFullScreenEnabledAndFullScreen():Boolean {
+			return isFullScreen() && isFullScreenEnabled();
 		}
 	}
 }

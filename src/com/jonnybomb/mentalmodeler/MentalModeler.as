@@ -20,6 +20,7 @@ package com.jonnybomb.mentalmodeler
 	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -29,6 +30,7 @@ package com.jonnybomb.mentalmodeler
 	public class MentalModeler extends Sprite // implements IInteractiveObject, IInteractiveObjectV2
 	{
 		public static const IN_SUITE:Boolean = true;
+		public static const FULL_SCREEN:Boolean = true;
 		
 		//private var _api:IInteractiveObjectAPI;
 		private var _initCompleteCallback:Function;
@@ -74,10 +76,12 @@ package com.jonnybomb.mentalmodeler
 		{
 			//trace("MentalModeler, init, xml:"+((xml != null ) ? xml.toXMLString() : "null"));
 			_container = addChild(new ConceptsContainer(CMapConstants.NOTES_WIDTH, CMapConstants.MENU_HEIGHT)) as ConceptsContainer;
+			
 			_controller = new CMapController(_container, _standAlone);
 			_controller.model.canSaveAndLoad = !IN_SUITE;
+			_controller.model.hasScreenshotAndFullscreen = FULL_SCREEN;
 			_container.controller = _controller;
-			if (IN_SUITE)
+			if (IN_SUITE || FULL_SCREEN)
 				_controlPanelDisplay = addChildAt(new ControlPanelDisplay(_controller, 0, 0, CMapConstants.NOTES_WIDTH), 0) as ControlPanelDisplay;
 			else
 				_controlPanelDisplay = addChildAt(new ControlPanelDisplay(_controller, 0, CMapConstants.MENU_HEIGHT, CMapConstants.NOTES_WIDTH), 0) as ControlPanelDisplay;
@@ -91,45 +95,45 @@ package com.jonnybomb.mentalmodeler
 			/*
 			if (xml && "settings" in xml)
 			{
-				var settings:XML = xml.settings[0];
-					
-				if (XMLUtil.isInt(settings, "@width"))
-					_width = parseInt(settings.@width);
-				
-				if (XMLUtil.isInt(settings, "@height"))
-					_height = parseInt(settings.@height);
-				
-				if (XMLUtil.isInt(settings, "@maxNodes"))
-					_controller.maxNodes = parseInt(settings.@maxNodes);
-				
-				if ("addNodeLabel" in settings && XMLUtil.hasTextNodeWithContent(settings.addNodeLabel[0]))
-					_controller.addNodeLabel =  settings.addNodeLabel[0].text()[0];
-				
-				if ("nodePrefillText" in settings && XMLUtil.hasTextNodeWithContent(settings.nodePrefillText[0]))
-					_controller.nodePrefillText =  settings.nodePrefillText[0].text()[0]
-						
-				if ("bg" in settings)
-				{
-					var bg:XML = settings.bg[0];
-					
-					if (XMLUtil.isInt(bg, "@strokeWeight"))
-						_controller.strokeWeight = parseInt(bg.@strokeWeight);
-					
-					if (XMLUtil.isInt(bg, "@strokeColor"))
-						_controller.strokeColor = parseInt(bg.@strokeColor);
-					
-					if (XMLUtil.isInt(bg, "@fillColor"))
-						_controller.fillColor = parseInt(bg.@fillColor);
-					
-					if (XMLUtil.isNotEmptyString(bg, "@showInsetShadow"))
-						_controller.showInsetShadow = bg.@showInsetShadow.toString().toLowerCase() == "true";
-				}
+			var settings:XML = xml.settings[0];
+			
+			if (XMLUtil.isInt(settings, "@width"))
+			_width = parseInt(settings.@width);
+			
+			if (XMLUtil.isInt(settings, "@height"))
+			_height = parseInt(settings.@height);
+			
+			if (XMLUtil.isInt(settings, "@maxNodes"))
+			_controller.maxNodes = parseInt(settings.@maxNodes);
+			
+			if ("addNodeLabel" in settings && XMLUtil.hasTextNodeWithContent(settings.addNodeLabel[0]))
+			_controller.addNodeLabel =  settings.addNodeLabel[0].text()[0];
+			
+			if ("nodePrefillText" in settings && XMLUtil.hasTextNodeWithContent(settings.nodePrefillText[0]))
+			_controller.nodePrefillText =  settings.nodePrefillText[0].text()[0]
+			
+			if ("bg" in settings)
+			{
+			var bg:XML = settings.bg[0];
+			
+			if (XMLUtil.isInt(bg, "@strokeWeight"))
+			_controller.strokeWeight = parseInt(bg.@strokeWeight);
+			
+			if (XMLUtil.isInt(bg, "@strokeColor"))
+			_controller.strokeColor = parseInt(bg.@strokeColor);
+			
+			if (XMLUtil.isInt(bg, "@fillColor"))
+			_controller.fillColor = parseInt(bg.@fillColor);
+			
+			if (XMLUtil.isNotEmptyString(bg, "@showInsetShadow"))
+			_controller.showInsetShadow = bg.@showInsetShadow.toString().toLowerCase() == "true";
+			}
 			}
 			*/
 			
 			/*
 			if (_initCompleteCallback != null)
-				_initCompleteCallback();
+			_initCompleteCallback();
 			*/
 		}
 		
@@ -162,7 +166,7 @@ package com.jonnybomb.mentalmodeler
 			//_menu.handleResize(null);
 			
 			//if (!_showMenu)
-				//_controller.loadMap();
+			//_controller.loadMap();
 			
 			//_controller.addDebug();
 			
@@ -212,9 +216,9 @@ package com.jonnybomb.mentalmodeler
 		/*
 		public function initializeObject(api:IInteractiveObjectAPI, xml:XML, initCompleteCallback:Function ):void
 		{
-			_api = api;
-			_initCompleteCallback = initCompleteCallback;
-			init(xml);
+		_api = api;
+		_initCompleteCallback = initCompleteCallback;
+		init(xml);
 		}
 		*/
 		

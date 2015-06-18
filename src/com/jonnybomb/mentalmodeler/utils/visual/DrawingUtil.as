@@ -1,18 +1,130 @@
 package com.jonnybomb.mentalmodeler.utils.visual
 {
-	import flash.display.Graphics;
-	import flash.display.Sprite;
-	import flash.geom.Matrix;
-	
 	import com.jonnybomb.mentalmodeler.model.data.ColorData;
 	import com.jonnybomb.mentalmodeler.model.data.ColorExtended;
 	import com.jonnybomb.mentalmodeler.model.data.GradientColorData;
-	
 	import com.jonnybomb.mentalmodeler.utils.math.MathUtil;
+	
+	import flash.display.DisplayObject;
+	import flash.display.Graphics;
+	import flash.display.Sprite;
+	import flash.geom.Matrix;
+	import flash.geom.Rectangle;
 
 	public class DrawingUtil
 	{
 		public static const DEFAULT_ELLIPSE_OBJ:Object = {tr:0, tl:0, br:0, bl:0};
+		
+		public static function drawCameraIcon(r:Rectangle, color:uint = 0xffffff):Sprite {
+			var s:Sprite = new Sprite();
+			var g:Graphics = s.graphics;
+			g.beginFill(color, 1);
+			var ellipse:int = 5;
+			var bodyPct:Number = 0.8;
+			var yAdj:Number = r.height * (1 - bodyPct);
+			var adjY:Number = r.y + yAdj;
+			var bodyPctX:Number = 0.3;
+			var xAdj:Number = r.width * (1 - bodyPctX);
+			var adjX:Number = r.x + xAdj;
+			g.drawRoundRect(r.x, adjY, r.width, r.height * bodyPct, ellipse);
+			g.drawCircle(r.x + r.width/2, adjY + (r.height * bodyPct)/2, 5);// + (r.height * bodyPct)/2, 6);
+			g.endFill();
+			g.beginFill(color, 1);
+			g.drawCircle(r.x + r.width/2, adjY + (r.height * bodyPct)/2, 3);
+			g.endFill();
+			g.beginFill(color, 1);
+			var offset:Number = 0.275;
+			var offsetX:Number = r.x + offset * r.width;
+			var offsetY:Number = r.y;// + offset * r.height;
+			var offsetWidth:Number = r.width * (1 - (offset * 2));
+			var offsetHeight:Number = r.height * (1 - bodyPct) + 1;
+			g.drawRoundRect(offsetX, offsetY, offsetWidth, offsetHeight, ellipse);
+			g.endFill();
+			
+			return s;
+		}
+		
+		public static function drawFullscreenToggleIcon(expand:Boolean, r:Rectangle, iconSide:int, color:uint = 0xffffff):Sprite {
+			var s:Sprite = new Sprite();
+			for (var i:int=0; i<4; i++) {
+				var a:Sprite = s.addChild( drawArrow(color, iconSide) ) as Sprite;
+				if (expand) {	
+					switch (i) {
+						case 0: // tl
+							break;
+						case 1: // tr
+							a.x = r.width;
+							a.rotation = 90;
+							break;
+						case 2: // br
+							a.x = r.width;
+							a.y = r.height;
+							a.rotation = 180;
+							break;
+						case 3: // bl
+							a.y = r.height;
+							a.rotation = 270;
+							break;
+					}
+				}
+				else {
+					switch (i) {
+						case 0: // tl
+							a.rotation = 180;
+							a.x = iconSide;
+							a.y = iconSide;
+							break;
+						case 1: // tr
+							a.rotation = 270;
+							a.x = r.width - iconSide;
+							a.y = iconSide;
+							break;
+						case 2: // br
+							a.rotation = 0;
+							a.x = r.width - iconSide;
+							a.y = r.height - iconSide;
+							break;
+						case 3: // bl
+							a.rotation = 90;
+							a.x = iconSide;
+							a.y = r.height - iconSide;
+							break;		
+					}
+				} 	
+			}
+			return s;
+		}
+		
+		public static function drawArrow(color:uint = 0xffffff, side:int = 4):Sprite {
+			var s:Sprite = new Sprite();
+			var g:Graphics = s.graphics;
+			g.beginFill(color, 1);
+			g.moveTo(0, 0);
+			g.lineTo(side, 0);
+			g.lineTo(0, side);
+			g.lineTo(0, 0);
+			g.moveTo(1, 1);
+			g.lineStyle(2, 0xffffff);
+			g.lineTo(side, side);
+			return s;
+		}
+		
+		/*
+		public static function drawArrow(color:uint = 0xffffff, alpha:Number = 1, arrowHeight:int = 4, arrowWidth:int = 3, stemHeight:int = 2, stemWidth:int = 2):Sprite {
+			var s:Sprite = new Sprite();
+			var g:Graphics = s.graphics;
+			g.beginFill(color, alpha);
+			g.moveTo(0, 0);
+			g.lineTo(-arrowWidth, arrowHeight);
+			g.lineTo(-stemWidth/2, arrowHeight);
+			g.lineTo(-stemWidth/2, arrowHeight + stemHeight);
+			g.lineTo(stemWidth/2, arrowHeight + stemHeight);
+			g.lineTo(stemWidth/2, arrowHeight);
+			g.lineTo(arrowWidth, arrowHeight);
+			g.lineTo(0, 0);
+			return s;
+		}
+		*/
 		
 		public static function drawSquiggly(s:Sprite, w:int, color:uint = 0xFF0000, lineThickness:Number = 0.25):void
 		{

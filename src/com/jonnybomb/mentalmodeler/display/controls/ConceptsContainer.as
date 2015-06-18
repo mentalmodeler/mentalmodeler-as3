@@ -10,6 +10,7 @@ package com.jonnybomb.mentalmodeler.display.controls
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.display.Stage;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.filters.BitmapFilterQuality;
@@ -29,6 +30,7 @@ package com.jonnybomb.mentalmodeler.display.controls
 		private var _scrollPanel:ScrollPanel;
 		
 		public function get vScroll():Number { return _scrollPanel != null ? _scrollPanel.vScroll : 0; }
+		public function get content():Sprite { return _scrollPanel.content; }
 		
 		public function ConceptsContainer(x:int, y:int)
 		{
@@ -121,6 +123,10 @@ package com.jonnybomb.mentalmodeler.display.controls
 		private function handleStageResize(e:ControllerEvent):void
 		{
 			var stage:Stage = _controller.stage;
+			var fullscreen:Boolean = _controller.isFullScreenEnabledAndFullScreen(); //MentalModeler.FULL_SCREEN && stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE; 
+			trace("fullscreen:"+fullscreen);
+			var x:Number = fullscreen ? 0 : CMapConstants.NOTES_WIDTH;			
+			this.x = x;		
 			var w:Number = stage.stageWidth - x;
 			var h:Number = stage.stageHeight - y;
 			var g:Graphics = _bg.graphics;
@@ -134,6 +140,7 @@ package com.jonnybomb.mentalmodeler.display.controls
 				_scrollPanel.setSize(w, h);
 				_scrollPanel.draw();
 			}
+			
 		}
 		
 		public function finalize():void

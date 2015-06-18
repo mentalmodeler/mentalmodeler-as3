@@ -10,8 +10,6 @@ package com.jonnybomb.mentalmodeler.model
 	
 	import flash.events.EventDispatcher;
 	
-	import flashx.textLayout.events.ModelChange;
-
 	public class CMapModel  extends EventDispatcher
 	{
 		private static const XML_HEADER:String = "<?xml version='1.0' encoding='UTF-8'?>";
@@ -26,6 +24,7 @@ package com.jonnybomb.mentalmodeler.model
 		private var _curCd:ConceptDisplay;
 		
 		public var canSaveAndLoad:Boolean;
+		public var hasScreenshotAndFullscreen:Boolean;
 		
 		private var _curSelected:INotable;
 		public function get curSelected():INotable { return _curSelected; }
