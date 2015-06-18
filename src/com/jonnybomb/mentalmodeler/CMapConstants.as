@@ -64,6 +64,7 @@ package com.jonnybomb.mentalmodeler
 		public static const MESSAGE_LOAD_SELECT:String = "Please use the browse dialog to select a .mmp file to load.";
 		public static const MESSAGE_SAVE_SELECT:String = "Please use the save dialog to save you Mental Model as a .mmp file.";
 		public static const MESSAGE_SCREENSHOT_SELECT:String = "Please use the save dialog to export a screenshot(.png) of your Mental Model.";
+		public static const UNAPPROVED_CONTEXT:String = "You are attempting to use MentalModeler in an unapproved context. Please contact stevenallangray@gmail.com for approval.";
 		public static const NODE_PREFILL_TEXT:String = "Enter name";
 		public static const NOTES_PREFILL_TEXT:String = "Enter notes";
 		public static const UNITS_PREFILL_TEXT:String = "Enter unit of measurement";

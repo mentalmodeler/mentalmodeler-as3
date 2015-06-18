@@ -24,6 +24,7 @@ package com.jonnybomb.mentalmodeler
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.external.ExternalInterface;
 	import flash.geom.Rectangle;
 	import flash.utils.Dictionary;
 	
@@ -91,6 +92,27 @@ package com.jonnybomb.mentalmodeler
 			{
 				//var rect:Rectangle = new Rectangle(0, 0, 800, 600); 
 				build(null);
+			}
+			
+			// check for use in permissible context
+			var permitted:Boolean = false;
+			var whitelist:Array = ['/jonnybomb/mentalmodeler','http://localhost:8080/','http://www.mentalmodeler', 'http://mentalmodeler'];  
+			var url:String = stage.loaderInfo.url;
+			for (var i:int=0; i<whitelist.length; i++) {
+				if (url.indexOf(whitelist[i]) > -1) {
+					permitted = true;
+					break;
+				}
+			}
+			/*
+			if (ExternalInterface.available) {
+				ExternalInterface.call('console.log', 'url:',url,', permitted:',permitted);
+			}
+			trace('url:',url,', permitted:',permitted);
+			*/
+			
+			if (!permitted) {
+				Alert.show(new AlertContentDefault(CMapConstants.UNAPPROVED_CONTEXT), null);
 			}
 			/*
 			if (xml && "settings" in xml)

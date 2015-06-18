@@ -30,7 +30,7 @@ package com.jonnybomb.mentalmodeler.display.controls
 		private var _scrollPanel:ScrollPanel;
 		
 		public function get vScroll():Number { return _scrollPanel != null ? _scrollPanel.vScroll : 0; }
-		public function get content():Sprite { return _scrollPanel.content; }
+		public function get content():Sprite { return _scrollPanel ? _scrollPanel.content : this; }
 		
 		public function ConceptsContainer(x:int, y:int)
 		{
