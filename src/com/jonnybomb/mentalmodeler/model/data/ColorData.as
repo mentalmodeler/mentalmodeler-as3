@@ -1,10 +1,11 @@
 package com.jonnybomb.mentalmodeler.model.data
 {
 	import flash.utils.Dictionary;
-
+	
 	public class ColorData extends Object
 	{
 		public static var CD_FILL:String = "cdFill";
+		public static var MENU:String = "menu";
 		public static var CD_STATUS_FILL:String = "cdStatusFill";
 		public static var CD_OUTLINE:String = "cdOutline";
 		public static var CD_OUTLINE_OVER:String = "cdOutlineOver";
@@ -64,7 +65,7 @@ package com.jonnybomb.mentalmodeler.model.data
 		{
 			if (!clone && colorsDict[s])
 				return colorsDict[s];
-				
+			
 			var cd:ColorData;
 			switch (s)
 			{
@@ -74,11 +75,18 @@ package com.jonnybomb.mentalmodeler.model.data
 					cd.fill = new GradientColorData([0xFFFFFF, 0xCCCCCC], [1, 1], [0, 255]); 
 					break;
 				
+				case MENU:
+					cd = new ColorData();
+					cd.stroke = new ColorExtended(0x000000, 1); 
+					cd.fill = new ColorExtended(0xE6E6E6, 1);
+					//cd.fill = new GradientColorData([0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255]); 
+					break;
+				
 				case CD_FILL:
 					cd = new ColorData();
 					cd.fill = new GradientColorData([0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255]); 
 					break;
-			
+				
 				case CD_STATUS_FILL:
 					cd = new ColorData();
 					cd.stroke = new ColorExtended(0xFFFFFF, 1);

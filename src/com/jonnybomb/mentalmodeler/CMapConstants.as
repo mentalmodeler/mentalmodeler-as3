@@ -70,7 +70,8 @@ package com.jonnybomb.mentalmodeler
 		public static const UNITS_PREFILL_TEXT:String = "Enter unit of measurement";
 		public static const ADD_NODE_LABEL:String = "ADD COMPONENT";
 		
-		public static const CONFIDENCE_VALUES:Object = { min:-2, max:2, init:0, numInt:6 };
+		public static const CONFIDENCE_VALUES:Object = { min:-2, max:2, init:1, numInt:6 };
+		public static const INFLUENCE_LINE_VALUES:Object = { min:-1, max:1, init:0, numInt:20 };
 		
 		public static const ADD_BUTTON_POS_PADDING:int = 20;
 		public static const CD_POS_START_PCT:Number = 0.8;
@@ -115,12 +116,12 @@ package com.jonnybomb.mentalmodeler
 		public static const LINE_VALUE_DEFAULT:LineValueData = new LineValueData(INFLUENCE_STRING_VALUE_UNDEFINED, LineValueData.UNDEFINED_VALUE, "?", 15, 0x000000, -1, -1);
 		public static const LINE_VALUE_REMOVE:LineValueData = new LineValueData(INFLUENCE_STRING_VALUE_NULL, LineValueData.REMOVE_VALUE, LINE_VALUE_REMOVE_LABEL, 15, 0x000000, -1, -1);
 		public static const LINE_VALUES:Vector.<LineValueData> = new <LineValueData>[ new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_HIGH, INFLUENCE_VALUE_POSITIVE_HIGH, "+++", 15, 0x0351A6, 0, -1), //0x023973
-																					  new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_MEDIUM, INFLUENCE_VALUE_POSITIVE_MEDIUM, "++", 15, 0x0351A6, 0, -1),
-																					  new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_LOW, INFLUENCE_VALUE_POSITIVE_LOW, "+", 15, 0x0351A6, 0, -1), //0x5688D8
-																					  new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_LOW, INFLUENCE_VALUE_NEGATIVE_LOW, "-", 17, 0xBF5513, 1, -1, 3), //0xD87756
-																					  new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_MEDIUM, INFLUENCE_VALUE_NEGATIVE_MEDIUM, "--", 17, 0xBF5513, 1, -1, 3),
-																					  new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_HIGH, INFLUENCE_VALUE_NEGATIVE_HIGH, "---", 17, 0xBF5513, 1, -1, 3) //0x8C400E
-																					];
+			new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_MEDIUM, INFLUENCE_VALUE_POSITIVE_MEDIUM, "++", 15, 0x0351A6, 0, -1),
+			new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_LOW, INFLUENCE_VALUE_POSITIVE_LOW, "+", 15, 0x0351A6, 0, -1), //0x5688D8
+			new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_LOW, INFLUENCE_VALUE_NEGATIVE_LOW, "-", 17, 0xBF5513, 1, -1, 3), //0xD87756
+			new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_MEDIUM, INFLUENCE_VALUE_NEGATIVE_MEDIUM, "--", 17, 0xBF5513, 1, -1, 3),
+			new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_HIGH, INFLUENCE_VALUE_NEGATIVE_HIGH, "---", 17, 0xBF5513, 1, -1, 3) //0x8C400E
+		];
 		/*
 		public static const LINE_VALUES:Vector.<LineValueData> = new <LineValueData>[ new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_HIGH, INFLUENCE_VALUE_POSITIVE_HIGH, "+++ Increase Greatly", 15, 0x0351A6, 0, -1), //0x023973
 		new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_MEDIUM, INFLUENCE_VALUE_POSITIVE_MEDIUM, " ++ Increase ", 15, 0x0351A6, 0, -1),
