@@ -77,9 +77,9 @@ package com.jonnybomb.mentalmodeler.model.data
 				
 				case MENU:
 					cd = new ColorData();
-					cd.stroke = new ColorExtended(0x000000, 1); 
-					cd.fill = new ColorExtended(0xE6E6E6, 1);
-					//cd.fill = new GradientColorData([0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255]); 
+					cd.stroke = new ColorExtended(0x999999, 1); 
+					//cd.fill = new ColorExtended(0xE6E6E6, 1);
+					cd.fill = new GradientColorData([0xFFFFFF, 0xE6E6E6], [1, 1], [0, 255]); 
 					break;
 				
 				case CD_FILL:

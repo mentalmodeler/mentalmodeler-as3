@@ -113,7 +113,7 @@ package com.jonnybomb.mentalmodeler.controller
 				ExternalInterface.call("flashInitialized");
 			}
 			else if (!model.canSaveAndLoad)
-				Alert.show(new AlertContentDefault("External Interface not available", "OK", false), null);	
+				//Alert.show(new AlertContentDefault("External Interface not available", "OK", false), null);	
 			
 			updateHTMLSize(CMapConstants.WIDTH_START, CMapConstants.HEIGHT_START);
 			//flash.external.ExternalInterface.call("flashInitialized");

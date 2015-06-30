@@ -295,6 +295,7 @@ package com.jonnybomb.ui.components
 				}
 				updateProgressDisplay();
 				update();
+				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
 		
