@@ -152,7 +152,7 @@ package com.jonnybomb.ui.components
 			enabled = true;
 		}
 		
-		public function setValue(value:Number, dispatchChange:Boolean = true):void { /*trace('setValue, value:'+value);*/ updateProgressDisplay( (value - _values.min) / (_values.max - _values.min), dispatchChange ); }
+		public function setValue(value:Number, dispatchChange:Boolean = true):void { trace('setValue, value:'+value); updateProgressDisplay( (value - _values.min) / (_values.max - _values.min), dispatchChange ); }
 		public function setPct(pct:Number, dispatchChange:Boolean = true):void { updateProgressDisplay(pct, dispatchChange); }
 		
 		public function set enabled(value:Boolean):void
