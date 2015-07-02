@@ -34,9 +34,10 @@ package com.jonnybomb.mentalmodeler.display
 		private var _slider:Slider;
 		private var _bg:Sprite;
 		private var _valueTf:TextField;
-		private var _valueTfHolder:Sprite;
+		private var _valueTfHolder:UIButton;
 		private var _value:Number;
 		private var _removeButton:UIButton;
+		private var _removeButtonLVD:LineValueData;
 		
 		private var _height:Number;
 		override public function get height():Number { return _height; }
@@ -93,14 +94,16 @@ package com.jonnybomb.mentalmodeler.display
 			filters = [CMapConstants.CD_DROP_SHADOW];
 			var _ellipse:int = 10;
 			var stroke:int = 1;
-			var paddingX:int = 4;
-			var paddingY:int = 6;
-			var w:int = 58;//56;
-			var h:int = 133; //153;
+			var bEllipse:int = CMapConstants.BUTTON_ELLIPSE;
+			var bHeight:int = 20;
+			var w:int = 36;//58;//56;
+			var h:int = 130; //153;
 			var sliderWidth:int = 28;
-			var sliderHeight:int = 100; //120;
+			var paddingX:int = (w - sliderWidth)/2;
+			var paddingY:int = paddingX;
+			var sliderHeight:int = h - (bHeight+paddingY)*2; //120;
 			_bg = this.addChild(new Sprite()) as Sprite;
-			DrawingUtil.drawRect(_bg, w, h, ColorData.getColor(ColorData.MENU), stroke, _ellipse);
+			DrawingUtil.drawRect(_bg, w, sliderHeight + paddingY*2, ColorData.getColor(ColorData.MENU), stroke);//, _ellipse);
 			
 			var handle:Object = { up:ColorData.getColor(ColorData.BUTTON_UP),
 				over:ColorData.getColor(ColorData.BUTTON_OVER),
@@ -113,10 +116,11 @@ package com.jonnybomb.mentalmodeler.display
 			};
 			var xAdj:int = - Math.round(w/2);
 			_bg.x = xAdj;
+			_bg.y = bHeight;
 			//public function Slider(width:int, height:int, type:int, values:Object, styles:Object)
 			_slider = addChild( new Slider(sliderWidth, sliderHeight, Slider.CONTINUOUS, CMapConstants.INFLUENCE_LINE_VALUES, styles, Slider.VERT) ) as Slider;
 			//_slider.rotation = -90;
-			_slider.y = paddingY;
+			_slider.y = bHeight + paddingY;
 			_slider.x = paddingX + xAdj;
 			_slider.addEventListener(Event.CHANGE, onSliderChange, false, 0, true);
 			_slider.addEventListener(Event.COMPLETE, onSliderComplete, false, 0, true);
@@ -135,70 +139,51 @@ package com.jonnybomb.mentalmodeler.display
 			_buttons.push(button);
 			*/
 			
-			var icon:Sprite = addChildAt( drawIcon(sliderHeight), 1 ) as Sprite;
+			// slider bg slope
+			var icon:Sprite = addChildAt( drawIcon(sliderHeight, sliderWidth), 1 ) as Sprite;
 			icon.mouseEnabled = false;
 			icon.mouseChildren = false;
-//			var x2col:Number = _slider.x + _slider.width + paddingX * 2;
-//			var y2row:Number = _slider.height + paddingY * 2;
-//			var sW:Number = _slider.x + sliderWidth + paddingX * 1.5;
-//			var remaining:Number = w - sW; 
-//			trace("remaining:"+remaining+", sW:"+sW+", w:"+w);
-			var sW:Number = sliderWidth + paddingX * 1.5;
-			var sX:Number = _slider.x + sW;
-			var rema:Number = w - sW;
-			icon.x = xAdj + (sW - icon.width)/2;//sX + 2;//(rema - icon.width)/2; //sW + (remaining - icon.width)/2;
-			icon.y = paddingY + 2;
-			// value text field
+			icon.x = xAdj + paddingX;
+			icon.y = bHeight + paddingY;			
 			
-			var bEllipse:int = CMapConstants.BUTTON_ELLIPSE;
-			var bHeight:int = 24;
-			var bY:int = _bg.height - bHeight;
-				
+			// input text button
+			var bY:int = _bg.height + bHeight;
 			var props:Object = {};
 			var ds:DropShadowFilter = new DropShadowFilter(2, 90, 0, 0.5, 5, 5, 1, 1, true);//2, 90, 0x000000, 0.5, 5, 5, 1, 1);
 			props[ UIButton.STATE_COLORS ] = handle;
-			props[ UIButton.WIDTH ] = sW;
+			props[ UIButton.WIDTH ] = w;
 			props[ UIButton.HEIGHT ] = bHeight;
-			props[UIButton.ELLIPSE] = {tr:0, tl:0, br:0, bl:bEllipse};
+			props[UIButton.ELLIPSE] = {tr:0, tl:0, br:bEllipse, bl:bEllipse};
 			props[UIButton.USE_DROP_SHADOW] = false;
 			props[UIButton.MOUSE_DOWN_DISTANCE] = 0;
-			_valueTfHolder = addChild( new UIButton(props) ) as Sprite;
+			_valueTfHolder = addChild( new UIButton(props) ) as UIButton;
 			_valueTfHolder.x = xAdj;
 			_valueTfHolder.y = bY;
 			_valueTfHolder.mouseEnabled = false;
 			_valueTfHolder.mouseChildren = true;
 			_valueTfHolder.buttonMode = false;
 			_valueTfHolder.addEventListener(MouseEvent.CLICK, onTfButtonClick, false, 0 ,true);
+			
 			// delete button
 			var gap:int = 0;
 			props = {};
-			props[UIButton.WIDTH] = rema;
+			props[UIButton.WIDTH] = w;
 			props[UIButton.HEIGHT] = bHeight;
-			props[UIButton.ELLIPSE] = {tr:0, tl:0, br:bEllipse, bl:0};
+			props[UIButton.ELLIPSE] = {tr:bEllipse, tl:bEllipse, br:0, bl:0};
 			props[UIButton.USE_DROP_SHADOW] = false;
 			props[UIButton.MOUSE_DOWN_DISTANCE] = 0;
 			_removeButton = addChild(new UIButton(props)) as UIButton;
-			_removeButton.y = _valueTfHolder.y;
-			_removeButton.x = _valueTfHolder.x + _valueTfHolder.width + gap;
+			_removeButton.y = 0;
+			_removeButton.x = xAdj;
 			var deleteIcon:Sprite = drawDeleteIcon();
-			deleteIcon.x = 8;
-			deleteIcon.y = 8;
+			deleteIcon.x = (w - deleteIcon.width)/2;
+			deleteIcon.y = (bHeight - deleteIcon.height)/2;
 			deleteIcon.filters = [CMapConstants.INSET_BEVEL];
 			_removeButton.addLabel( deleteIcon );
-			/*
-			_valueTfHolder = addChild(new Sprite()) as Sprite;
-			_valueTfHolder.x = padding + xAdj;// + 4;
-			_valueTfHolder.y = _slider.height + (padding * 2) - 2;
-			var g:Graphics = _valueTfHolder.graphics;
-			g.beginFill(0x557302);//0x454545);
-			g.drawRoundRect(0, 0, sliderWidth, 20, 5, 5);
-			g.endFill();
-			*/
+			_removeButton.addEventListener( MouseEvent.CLICK, onRemoveClick, false, 0, true);
+			_removeButtonLVD = LineValueData.getLineValueData( '', 1000, CMapConstants.LINE_VALUE_REMOVE_LABEL );
 			
-			/*var del:Sprite = addChild( drawDeleteIcon() ) as Sprite;
-			del.y = _slider.height + padding * 2 + 5;
-			del.x = x2col + 2;*/
-			
+			// input tf
 			var tfPaddingX:int = 5;
 			var tfPaddingY:int = 5;
 			var textFormat:TextFormat = new TextFormat();
@@ -207,11 +192,11 @@ package com.jonnybomb.mentalmodeler.display
 			textFormat.bold = false;
 			textFormat.letterSpacing = -1;
 			textFormat.color = 0xffffff;
-			textFormat.align = TextFormatAlign.CENTER;
-			
-			_valueTf = _valueTfHolder.addChild(new TextField()) as TextField;
-			_valueTf.x = 16;
-			_valueTf.y = 0;
+			textFormat.align = TextFormatAlign.CENTER;		
+			_valueTf = new TextField();
+			_valueTfHolder.addLabel( _valueTf );
+			_valueTf.x = w/2 - 1;//xAdj;
+			_valueTf.y = -1;
 			_valueTf.maxChars = 4;
 			_valueTf.restrict = '0-9\-.';
 			_valueTf.filters = [ new DropShadowFilter(1, 180, 0, 0.3, 1, 1, 0.5) ];
@@ -236,7 +221,10 @@ package com.jonnybomb.mentalmodeler.display
 			onSliderComplete(null);
 		}
 		
-		
+		private function onRemoveClick(e:MouseEvent):void {
+			_controller.lineValue =_removeButtonLVD;
+			hide();
+		}		
 		
 		private function onTfButtonClick(e:MouseEvent):void {
 			trace('ontfbuttonclick');
@@ -245,77 +233,95 @@ package com.jonnybomb.mentalmodeler.display
 			_valueTf.setSelection(l, l);
 		}
 		
-		private function drawIcon(h:int):Sprite {
-			var w:int = 20;
-			var t:int = 2;
-			//var pct:Number = 0.2;
-			var color:uint = 0; //0x454545;
+		private function drawIcon(h:int, w:int):Sprite {
+			var t:int = 1;
+			var color:uint = 0x333333; //0x454545;
 			var s:Sprite = new Sprite();
 			s.cacheAsBitmap = true;
-			s.alpha = 0.15;
-			//s.filters = [CMapConstants.INSET_BEVEL];
-			
+			var w2:int = 8;
 			var plus:Sprite = s.addChild(new Sprite()) as Sprite;
 			var g:Graphics = plus.graphics;
 			g.beginFill(color);
-			g.drawRect(0, (w - t)/2, w, t);
-			g.drawRect((w - t)/2, 0, t, (w - t)/2);
-			g.drawRect((w - t)/2, (w - t)/2 + t, t, (w - t)/2);
-			g.endFill();			
+			g.drawRect(0, (w2 - t)/2, w2, t);
+			g.drawRect((w2 - t)/2, 0, t, (w2 - t)/2);
+			g.drawRect((w2 - t)/2, (w2 - t)/2 + t, t, (w2 - t)/2);
+			g.endFill();		
+			plus.x = 21;
+			plus.y = 0;
 			var icon:Sprite = s.addChild(new Sprite()) as Sprite;
 			g = icon.graphics;
-			g.beginFill(color);
-			//g.drawRect( (w-t)/2, w + t*2, t, h - (w*2 + t*2) );
-			var top:Number = w + t*2;
-			var bot:Number = top + (h - (w*2 + t*4));
+			g.beginFill(0, 0.1);
+			var top:Number = 0;
+			var bot:Number = h;
 			var left:Number = 0;
 			var right:Number = w;
+			var mid:Number = h/2;
+			var midLeft:Number = left + (w - (w*0.25))/2;
+			var midRight:Number = right - (w - (w*0.25))/2 
 			g.moveTo(left, top);
-			g.lineTo(right, bot);
+			g.moveTo(midLeft, mid);
 			g.lineTo(left, bot);
-			g.lineTo(right, top);
+			g.lineTo(midRight, bot);
+			g.lineTo(midRight, mid);
+			g.lineTo(midRight, top);
 			g.lineTo(left, top);
 			g.endFill();
+			t = 2;
 			var minus:Sprite = s.addChild(new Sprite()) as Sprite;
 			g = minus.graphics;
 			g.beginFill(color);
-			g.drawRect(0, h - (w/2 + t), w, t);
-			g.endFill();	
+			g.drawRect(0, h - (w2/2 + t), w2, t);
+			g.endFill();
+			minus.x = 21;
+			minus.y = 4;
 			return s;	
 		}
 		
 		private function drawDeleteIcon():Sprite {
 			var bodyWidth:int = 8;
 			var bodyHeight:int = 8;
-			var topHeight:int = 3;
-			var topBrimExtra:int = 1;
-			
+			var topHeight:int = 2;
+			var topTopHeight:int = 1;
+			var topBrimExtra:int = 2;
+			var topTopBrimExtra:int = 1;
+			var spacing:int = 1;
+			var bodyTop:int = topTopHeight + topHeight + spacing;		
 			var s:Sprite = new Sprite();
 			var g:Graphics = s.graphics;
-			//g.lineStyle(1, 0xFFFFFF);
-			g.beginFill(0xFFFFFF);
-			g.moveTo(0,0);
-			g.lineTo(bodyWidth, 0);
-			g.lineTo(bodyWidth, bodyHeight);
-			g.lineTo(0, bodyHeight);
-			g.lineTo(0, 0);
-			g.moveTo(- topBrimExtra, -1);
-			g.lineTo(topBrimExtra + bodyWidth, -1);
-			g.lineTo(topBrimExtra + bodyWidth, -3);
-			g.lineTo(bodyWidth - 2, -3);
-			g.lineTo(bodyWidth - 2, -4);
-			g.lineTo(bodyWidth - 6, -4);
-			g.lineTo(bodyWidth - 6, -3);
-			g.lineTo(- topBrimExtra, -3);
-			g.lineTo(- topBrimExtra, -1);
-			g.endFill();
+			g.beginFill(0xffffff);;
+			g.moveTo(topBrimExtra, bodyTop);
+			g.lineTo(topBrimExtra + bodyWidth, bodyTop);
+			g.lineTo(topBrimExtra + bodyWidth, bodyTop + bodyHeight);
+			g.lineTo(topBrimExtra, bodyTop + bodyHeight);
+			g.lineTo(topBrimExtra, bodyTop);
+			g.moveTo( 0, topTopHeight + topHeight);
+			g.lineTo(topBrimExtra*2 + bodyWidth, topTopHeight + topHeight);
+			g.lineTo(topBrimExtra*2 + bodyWidth, topTopHeight);
+			g.lineTo(topBrimExtra + bodyWidth - topTopBrimExtra, topTopHeight);
+			g.lineTo(topBrimExtra + bodyWidth - topTopBrimExtra, 0);
+			g.lineTo(topBrimExtra + topTopBrimExtra, 0);
+			g.lineTo(topBrimExtra + topTopBrimExtra, topTopHeight);
+			g.lineTo(0, topTopHeight);
+			g.lineTo(0, topTopHeight + topHeight);
+			g.endFill();	
 			return s;
 		}
 		
 		private function handleTextChange(e:Event):void {
-//			var n:Number = parseFloat( _valueTf.text );
-//			n = MathUtil.normalize( MathUtil.roundToDecimal(n, 10), -1, 1);
-//			trace("n:"+n);
+			var t:String = _valueTf.text;
+			if (t.indexOf('-') > -1 && t.indexOf('-') != 0 ) {
+				t = t.replace('-', '');
+				t = '-' + t;
+			}
+			if (t.indexOf('.') !== t.length - 1 ) {
+				var n:Number = parseFloat( t );
+				if ( !isNaN(n) ) {
+					n = MathUtil.normalize( MathUtil.roundToDecimal(n, 10), -1, 1);
+					_valueTf.text = n.toString();
+					setValue(0-n, "tf", false);
+				}
+			}
+			//trace("n:"+n);
 		}
 		
 		private function handleTextFocus(e:FocusEvent):void {
@@ -325,14 +331,18 @@ package com.jonnybomb.mentalmodeler.display
 				n = 0;
 			}
 			_valueTf.text = n.toString();
-			setValue(0-n, "tf")
+			setValue(0-n, "tf");
+		}
+		
+		private function onSliderComplete(e:Event):void {
+			setValue( getValue(), "slider");	
 		}
 		
 		private function onSliderChange(e:Event):void {
 			setValue( getValue(), "slider");
 		}
 		
-		private function setValue(value:Number, source:String):void {
+		private function setValue(value:Number, source:String, setInController:Boolean = true):void {
 			_value = value;
 			switch (source) {
 				case 'slider':
@@ -342,21 +352,26 @@ package com.jonnybomb.mentalmodeler.display
 					_slider.setValue( value, false );
 					break;
 			}
-			// LineValueData(stringValue:String = CMapConstants.INFLUENCE_STRING_VALUE_UNDEFINED, value:Number = UNDEFINED_VALUE, label:String = "", size:int = 15, color:uint = 0x000000, x:Number = 0, y:Number = 0, letterSpacing:int = 0)
-			var lvd:LineValueData = new LineValueData(CMapConstants.INFLUENCE_STRING_VALUE_UNDEFINED, value, "?", 15, 0x000000, -1, -1);
-			_controller.lineValue = lvd;
+			if ( setInController ) {
+				_controller.lineValue = getLVD( value );
+			}
 		}
 		
-		private function onSliderComplete(e:Event):void {
-			setValue( getValue(), "slider");	
+		private function getLVD( value:Number ):LineValueData {
+			var color:uint = value == 0 ? 0 : value < 0 ? 0xBF5513 : 0x0351A6;
+			var label:String = value == 0 ? '?' : value < 0 ? '-' : '+';
+			// LineValueData(stringValue:String, value:Number, label:String, size:int = 15, color:uint = 0x000000, x:Number = 0, y:Number = 0, letterSpacing:int = 0)
+			//new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_LOW, INFLUENCE_VALUE_NEGATIVE_LOW, "-", 17, color);
+			var lvd:LineValueData = LineValueData.getLineValueData(value.toString(), value, label, 15, color, -1, -1);
+			return lvd;
 		}
 		
 		private function getValue():Number {
 			var value:Number = _slider.value;
-			trace("getValue, value:"+value);
-			trace(" value:"+value);
+			//trace("getValue, value:"+value);
+			//trace(" value:"+value);
 			value = MathUtil.normalize( MathUtil.roundToDecimal(value, 2), -1, 1);
-			trace(" value:"+value);
+			//trace(" value:"+value);
 			return value;
 		}
 		

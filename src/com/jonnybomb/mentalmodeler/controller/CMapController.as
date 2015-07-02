@@ -602,7 +602,7 @@ package com.jonnybomb.mentalmodeler.controller
 			
 			if (lvd.label == CMapConstants.LINE_VALUE_REMOVE_LABEL)
 			{
-				//trace("\tlvd.label == CMapConstants.LINE_VALUE_REMOVE_LABEL");
+				//trace("\tlvd.label == CMapConstants.LINE_VALUE_REMOVE_LABEL"); 
 				removeLine(_curLine);
 				_model.curLine = null;
 			}

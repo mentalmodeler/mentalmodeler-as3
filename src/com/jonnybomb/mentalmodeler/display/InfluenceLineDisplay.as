@@ -169,8 +169,9 @@ package com.jonnybomb.mentalmodeler.display
 				var cdOver:ColorData = ColorData.getColor(ColorData.BUTTON_OVER, true);
 				color = GradientColorData(cdOver.fill).colors[0];
 			}
+			
 			var value:Number = Math.abs(LineValueData(_lineValue.value).value);
-			var lines:int = value == 1 ? 4 : value == 0.62 ? 2 : 1;
+			var lines:int = Math.round( value*3 + 1); //value == 1 ? 4 : value == 0.62 ? 2 : 1;
 			graphics.clear();
 			
 			//draw the line hit area
