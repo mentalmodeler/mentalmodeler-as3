@@ -113,6 +113,8 @@ package com.jonnybomb.mentalmodeler
 		public static const LINE_VALUE_INDICATOR_WIDTH:int = LINE_CLOSE_SIDE; //36;
 		public static const LINE_VALUE_HEIGHT:int = 26;
 		public static const LINE_VALUE_BORDER:int = 2;
+		public static const LINE_COLOR_POSITIVE:uint = 0x0351A6;
+		public static const LINE_COLOR_NEGATIVE:uint = 0xBF5513;
 		public static const LINE_VALUE_DEFAULT:LineValueData = new LineValueData(INFLUENCE_STRING_VALUE_UNDEFINED, LineValueData.UNDEFINED_VALUE, "?", 15, 0x000000, -1, -1);
 		public static const LINE_VALUE_REMOVE:LineValueData = new LineValueData(INFLUENCE_STRING_VALUE_NULL, LineValueData.REMOVE_VALUE, LINE_VALUE_REMOVE_LABEL, 15, 0x000000, -1, -1);
 		public static const LINE_VALUES:Vector.<LineValueData> = new <LineValueData>[ new LineValueData(INFLUENCE_STRING_VALUE_POSITIVE_HIGH, INFLUENCE_VALUE_POSITIVE_HIGH, "+++", 15, 0x0351A6, 0, -1), //0x023973

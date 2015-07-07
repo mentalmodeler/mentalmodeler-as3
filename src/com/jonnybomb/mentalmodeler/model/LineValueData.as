@@ -1,6 +1,7 @@
 package com.jonnybomb.mentalmodeler.model
 {
 	import com.jonnybomb.mentalmodeler.CMapConstants;
+	import com.jonnybomb.mentalmodeler.utils.CMapUtils;
 
 	public class LineValueData
 	{
@@ -17,8 +18,9 @@ package com.jonnybomb.mentalmodeler.model
 		public var x:Number = 0;
 		public var y:Number = 0;
 		public var letterSpacing:Number = 0;
+		public var id:String = '';
 		
-		public static function getLineValueData(stringValue:String = CMapConstants.INFLUENCE_STRING_VALUE_UNDEFINED, value:Number = UNDEFINED_VALUE, label:String = "", size:int = 15, color:uint = 0x000000, x:Number = 0, y:Number = 0, letterSpacing:int = 0):LineValueData {
+		public static function getLineValueData(stringValue:String = CMapConstants.INFLUENCE_STRING_VALUE_UNDEFINED, value:Number = UNDEFINED_VALUE, label:String = "?", size:int = 15, color:uint = 0, x:Number = 0, y:Number = 0, letterSpacing:int = 0):LineValueData {
 			var key:String =  'value'+stringValue
 			var returnLVD:LineValueData;
 			if (store.hasOwnProperty(key) ) {
@@ -32,7 +34,7 @@ package com.jonnybomb.mentalmodeler.model
 		
 		public function LineValueData(stringValue:String = CMapConstants.INFLUENCE_STRING_VALUE_UNDEFINED, value:Number = UNDEFINED_VALUE, label:String = "", size:int = 15, color:uint = 0x000000, x:Number = 0, y:Number = 0, letterSpacing:int = 0)
 		{
-			this.stringValue = stringValue;
+			this.stringValue = value.toString(); //stringValue;
 			this.value = value;
 			this.label = label;
 			this.size = size;
@@ -40,12 +42,13 @@ package com.jonnybomb.mentalmodeler.model
 			this.x = x;
 			this.y = y;
 			this.letterSpacing = letterSpacing;
+			this.id = CMapUtils.makeId();
 			//trace(this);
 		}
 		
 		public function toString():String
 		{
-			return "LineValueData >> value:"+value+", label:"+label+", size:"+size+", color:"+color+", x:"+x+", y:"+y+", letterSpacing:"+letterSpacing;
+			return "LineValueData >> id:"+id+", stringValue:"+stringValue+", value:"+value+", label:"+label+", size:"+size+", color:"+color+", x:"+x+", y:"+y+", letterSpacing:"+letterSpacing;
 		}
 	}
 }

@@ -44,6 +44,36 @@ package com.jonnybomb.mentalmodeler.utils.visual
 			return s;
 		}
 		
+		public static function drawDeleteIcon():Sprite {
+			var bodyWidth:int = 8;
+			var bodyHeight:int = 8;
+			var topHeight:int = 2;
+			var topTopHeight:int = 1;
+			var topBrimExtra:int = 2;
+			var topTopBrimExtra:int = 1;
+			var spacing:int = 1;
+			var bodyTop:int = topTopHeight + topHeight + spacing;		
+			var s:Sprite = new Sprite();
+			var g:Graphics = s.graphics;
+			g.beginFill(0xffffff);;
+			g.moveTo(topBrimExtra, bodyTop);
+			g.lineTo(topBrimExtra + bodyWidth, bodyTop);
+			g.lineTo(topBrimExtra + bodyWidth, bodyTop + bodyHeight);
+			g.lineTo(topBrimExtra, bodyTop + bodyHeight);
+			g.lineTo(topBrimExtra, bodyTop);
+			g.moveTo( 0, topTopHeight + topHeight);
+			g.lineTo(topBrimExtra*2 + bodyWidth, topTopHeight + topHeight);
+			g.lineTo(topBrimExtra*2 + bodyWidth, topTopHeight);
+			g.lineTo(topBrimExtra + bodyWidth - topTopBrimExtra, topTopHeight);
+			g.lineTo(topBrimExtra + bodyWidth - topTopBrimExtra, 0);
+			g.lineTo(topBrimExtra + topTopBrimExtra, 0);
+			g.lineTo(topBrimExtra + topTopBrimExtra, topTopHeight);
+			g.lineTo(0, topTopHeight);
+			g.lineTo(0, topTopHeight + topHeight);
+			g.endFill();	
+			return s;
+		}
+		
 		public static function drawFullscreenToggleIcon(expand:Boolean, r:Rectangle, iconSide:int, color:uint = 0xffffff):Sprite {
 			var s:Sprite = new Sprite();
 			for (var i:int=0; i<4; i++) {

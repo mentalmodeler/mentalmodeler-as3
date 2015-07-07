@@ -192,9 +192,14 @@ package com.jonnybomb.mentalmodeler.display
 				_save = _holder.addChild(createButton("SAVE")) as UIButton;
 				_save.addEventListener(MouseEvent.CLICK, handleClickSave, false, 0, true);
 				_save.x = _load.x + _load.width + spacer;
-				_screenshot = _holder.addChild(createButton("SCREENSHOT")) as UIButton;
+				_screenshot = _holder.addChild(createButton(createScreenshotIcon()/*"SCREENSHOT"*/)) as UIButton;
 				_screenshot.addEventListener(MouseEvent.CLICK, handleClickScreenshot, false, 0, true);
 				_screenshot.x = _save.x + _save.width + spacer;
+				if (_hasScreenshotAndFullscreen) {
+					_fullscreen = _holder.addChild(createButton(createFullscreenLabel(true))) as UIButton; ///*"TOGGLE FULLSCREEN"*/
+					_fullscreen.addEventListener(MouseEvent.CLICK, handleClickFullscreen, false, 0, true);
+					_fullscreen.x = _screenshot.x + _screenshot.width + spacer;
+				}
 				/*
 				_export = _holder.addChild(createButton("EXPORT")) as UIButton;
 				_export.addEventListener(MouseEvent.CLICK, handleClickExport, false, 0, true);

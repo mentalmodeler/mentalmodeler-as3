@@ -257,6 +257,7 @@ package com.jonnybomb.mentalmodeler.display
 		private function handleLineMouseDown(e:MouseEvent):void
 		{
 			//_controller.model.curLine = this;
+			//trace('InfluenceLineDisplay > handleLineMouseDown > this:'+this);
 			_controller.setAsCurrentLine(this);
 		}	 
 		
@@ -301,6 +302,11 @@ package com.jonnybomb.mentalmodeler.display
 						if (!lineV)
 							return;
 						
+						var globalPoint:Point = getLineValueGlobalPos(lineV);
+						//trace('InfluenceLineDisplay > handleComboMouseUp > this:',this);
+						_controller.showLineValueMenu(globalPoint.x, globalPoint.y, this);
+						
+						/*
 						var options:Vector.<LineValueData> = CMapConstants.LINE_VALUES;
 						if (options.length == 0)
 						{
@@ -313,6 +319,7 @@ package com.jonnybomb.mentalmodeler.display
 							var globalPoint:Point = getLineValueGlobalPos(lineV);
 							_controller.showLineValueMenu(globalPoint.x, globalPoint.y, options.indexOf(_lineValue.value), this);
 						}
+						*/
 					}
 				}
 				_lineValueMoved = false;
@@ -395,6 +402,10 @@ package com.jonnybomb.mentalmodeler.display
 			_eeCenter = null;
 			_eeEdge = null;
 			_erEdge = null;
+		}
+		
+		override public function toString():String {
+			return ('InfluenceLineDisplay > id:'+_lineValue.value.id+', influenceValue:'+influenceValue);
 		}
 	}
 }

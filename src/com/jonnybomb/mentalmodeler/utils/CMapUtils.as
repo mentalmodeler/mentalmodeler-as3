@@ -12,6 +12,18 @@ package com.jonnybomb.mentalmodeler.utils
 
 	public class CMapUtils
 	{
+		public static function makeId():String
+		{
+			var s:String = '';
+			var i:int;
+			var c:String = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+			for ( i=0; i<8; i++ ) { 
+				s += c.charAt(Math.floor(Math.random() * (i === 0 ? c.length-10 : c.length) ));
+			}
+			return s;
+		}
+		
+		/*
 		public static function getLineValueDataByStringValue(stringValue:String, datas:Vector.<LineValueData>):LineValueData
 		{
 			var lvd:LineValueData;
@@ -22,7 +34,33 @@ package com.jonnybomb.mentalmodeler.utils
 			}
 			return CMapConstants.LINE_VALUE_DEFAULT;
 		}
+		*/
 		
+		public static function getLineValueDataByValue( value:Number ):LineValueData {
+			// set color
+			var color:uint = 0;
+			var label:String = '?';
+			var size:int= 15;
+			var x:int = -1;
+			var y:int = 1;
+			var letterSpacing:int = 1;
+			
+			if  (value > 0 ) {
+				color = CMapConstants.LINE_COLOR_POSITIVE;
+				label = '+';
+				x = 0;
+				y = -1;
+			} else if (value < 0) {
+				color = CMapConstants.LINE_COLOR_NEGATIVE
+				label = '-';
+				x = 1;
+				y = -1;
+				letterSpacing = 3;
+			}
+			var lvd:LineValueData = LineValueData.getLineValueData( value.toString(), value, label, size, color, x, y, letterSpacing);
+			//trace('lvd:'+lvd);
+			return lvd;
+		}
 		/*
 		public static function getLineValueDataByLabel(label:String, datas:Vector.<LineValueData>):LineValueData
 		{

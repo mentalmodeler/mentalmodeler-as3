@@ -10,6 +10,7 @@ package com.jonnybomb.mentalmodeler.controller
 	
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
+	import flash.display.Loader;
 	import flash.display.Sprite;
 	import flash.display.StageDisplayState;
 	import flash.errors.IllegalOperationError;
@@ -19,6 +20,8 @@ package com.jonnybomb.mentalmodeler.controller
 	import flash.events.IOErrorEvent;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	
 	public class IOController extends EventDispatcher
@@ -119,6 +122,22 @@ package com.jonnybomb.mentalmodeler.controller
 		/////////////////////////
 		// File Reference Save //
 		/////////////////////////
+		
+		public function loadXML( url:String = '' ):void{
+			var loader:URLLoader = new URLLoader();
+			var loadComplete:Function = function(e:Event):void {
+				var xml:XML = new XML(loader.data);
+				//trace('xml:'+xml);
+				_controller.onMapLoaded( xml );
+				
+			}
+			var loadError:Function = function(e:Event):void {
+				trace('xml load error, e:'+e);
+			}	
+			loader.addEventListener(Event.COMPLETE, loadComplete);
+			loader.addEventListener(IOErrorEvent.IO_ERROR, loadError);
+			loader.load( new URLRequest(url) );
+		}
 		
 		public function saveFileRef():void
 		{

@@ -124,7 +124,7 @@ package com.jonnybomb.mentalmodeler.display.controls
 		{
 			var stage:Stage = _controller.stage;
 			var fullscreen:Boolean = _controller.isFullScreenEnabledAndFullScreen(); //MentalModeler.FULL_SCREEN && stage.displayState == StageDisplayState.FULL_SCREEN_INTERACTIVE; 
-			trace("fullscreen:"+fullscreen);
+			//trace("fullscreen:"+fullscreen);
 			var x:Number = fullscreen ? 0 : CMapConstants.NOTES_WIDTH;			
 			this.x = x;		
 			var w:Number = stage.stageWidth - x;

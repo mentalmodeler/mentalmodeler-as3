@@ -37,12 +37,12 @@ package com.jonnybomb.mentalmodeler.model
 		public function get curLine():InfluenceLineDisplay { return _curLine; }
 		public function set curLine(value:InfluenceLineDisplay):void
 		{
-			//trace("Model >> set curLine");
+			trace("Model >> set curLine");
 			//trace("\tBEFORE _curLine:"+_curLine+",_curSelected:"+_curSelected);
 			//_prevLine = _curLine;
 			_curLine = value;
 			_curSelected = _curLine;
-			//trace("\tAFTER _curLine:"+_curLine+",_curSelected:"+_curSelected);
+			trace("\tAFTER _curLine:"+_curLine+",_curSelected:"+_curSelected);
 			//_curCd = null;
 			dispatchEvent(new ModelEvent(ModelEvent.SELECTED_LINE_CHANGE));
 			dispatchEvent(new ModelEvent(ModelEvent.SELECTED_CHANGE));

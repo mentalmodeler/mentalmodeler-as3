@@ -31,7 +31,8 @@ package com.jonnybomb.mentalmodeler
 	public class MentalModeler extends Sprite // implements IInteractiveObject, IInteractiveObjectV2
 	{
 		public static const IN_SUITE:Boolean = false;
-		public static const FULL_SCREEN:Boolean = false;//true;
+		public static const FULL_SCREEN:Boolean = true;//true;
+		public static const MMP:String = '<![CDATA[H+]]>';
 		
 		//private var _api:IInteractiveObjectAPI;
 		private var _initCompleteCallback:Function;
@@ -70,6 +71,10 @@ package com.jonnybomb.mentalmodeler
 				init(xml);
 				*/
 				init(null);
+				
+				if (MMP is String && MMP.length > 0 ) {
+					_controller.loadXML('../mmp/fish_wetland2.mmp');
+				}
 			}
 		}
 		
@@ -82,7 +87,7 @@ package com.jonnybomb.mentalmodeler
 			_controller.model.canSaveAndLoad = !IN_SUITE;
 			_controller.model.hasScreenshotAndFullscreen = FULL_SCREEN;
 			_container.controller = _controller;
-			if (IN_SUITE || FULL_SCREEN)
+			if (IN_SUITE) // || FULL_SCREEN)
 				_controlPanelDisplay = addChildAt(new ControlPanelDisplay(_controller, 0, 0, CMapConstants.NOTES_WIDTH), 0) as ControlPanelDisplay;
 			else
 				_controlPanelDisplay = addChildAt(new ControlPanelDisplay(_controller, 0, CMapConstants.MENU_HEIGHT, CMapConstants.NOTES_WIDTH), 0) as ControlPanelDisplay;

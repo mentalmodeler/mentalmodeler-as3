@@ -117,13 +117,13 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			var s:String = "";
 			if (type == TYPE_LINE) // Line
 			{
-				var line:InfluenceLineDisplay = _curNotable as InfluenceLineDisplay; 
+				var line:InfluenceLineDisplay = _curNotable as InfluenceLineDisplay;
 				var nameER:String = (line.influencer.title != "" ) ? line.influencer.title : "[Component]";
 				var influence:String;
 				if (line.influenceValue == 0 || line.influenceValue == LineValueData.UNDEFINED_VALUE)
 					influence = "To"
 				else
-					influence = (line.influenceValue > 0 ? "INCREASES" : "DECREASES") + " ("+line.influenceLabel+")";
+					influence = (line.influenceValue > 0 ? "INCREASES" : "DECREASES") + " ("+line.influenceValue/*Label*/+")";
 				var nameEE:String = (line.influencee.title != "") ? line.influencee.title : "[Component]";
 				s = nameER + "<br/><b>" + influence + "</b><br/>" + nameEE;
 			}

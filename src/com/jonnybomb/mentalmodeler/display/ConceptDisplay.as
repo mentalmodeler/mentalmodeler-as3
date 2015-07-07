@@ -526,6 +526,7 @@ package com.jonnybomb.mentalmodeler.display
 		
 		private function createCloseLabel():Sprite
 		{
+			/*
 			var size:int = 5;
 			var icon:Sprite = new Sprite();
 			icon.graphics.lineStyle(3, 0xFFFFFF, 1, false, LineScaleMode.NORMAL, CapsStyle.NONE);
@@ -533,9 +534,13 @@ package com.jonnybomb.mentalmodeler.display
 			icon.graphics.lineTo(size, size);
 			icon.graphics.moveTo(size, -size);
 			icon.graphics.lineTo(-size, size);
-			icon.filters = [CMapConstants.INSET_BEVEL]
 			icon.x = _close.width / 2; 
 			icon.y = _close.height / 2;
+			*/
+			var icon:Sprite = DrawingUtil.drawDeleteIcon();
+			icon.filters = [CMapConstants.INSET_BEVEL]
+			icon.x = (_close.width - icon.width) / 2; 
+			icon.y = (_close.height - icon.height) / 2;
 			
 			return icon;
 		}

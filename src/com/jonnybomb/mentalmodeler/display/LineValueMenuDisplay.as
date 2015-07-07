@@ -8,6 +8,7 @@ package com.jonnybomb.mentalmodeler.display
 	import com.jonnybomb.mentalmodeler.model.LineValueData;
 	import com.jonnybomb.mentalmodeler.model.data.ColorData;
 	import com.jonnybomb.mentalmodeler.model.data.ColorExtended;
+	import com.jonnybomb.mentalmodeler.utils.CMapUtils;
 	import com.jonnybomb.mentalmodeler.utils.displayobject.DisplayObjectUtil;
 	import com.jonnybomb.mentalmodeler.utils.math.MathUtil;
 	import com.jonnybomb.mentalmodeler.utils.visual.DrawingUtil;
@@ -51,6 +52,13 @@ package com.jonnybomb.mentalmodeler.display
 		
 		public function show(x:Number, y:Number):void
 		{
+			var line:InfluenceLineDisplay = _controller.model.curLine;
+			var value:Number = line.influenceValue;
+			trace("LineValueMenu.show > value:"+value)		
+			setValue( line.influenceValue, 'both', false);
+			//trace("LineValueMenu.show > _controller.model.curLine:"+_controller.model.curLine);
+			//trace("line.influenceValue:"+line.influenceValue);
+			//setValue( line.influenceValue, 'both')
 			this.x = x;
 			this.y = y;
 			visible = true;
@@ -153,12 +161,12 @@ package com.jonnybomb.mentalmodeler.display
 			props[ UIButton.STATE_COLORS ] = handle;
 			props[ UIButton.WIDTH ] = w;
 			props[ UIButton.HEIGHT ] = bHeight;
-			props[UIButton.ELLIPSE] = {tr:0, tl:0, br:bEllipse, bl:bEllipse};
+			props[UIButton.ELLIPSE] = {tr:bEllipse, tl:bEllipse, br:0, bl:0};
 			props[UIButton.USE_DROP_SHADOW] = false;
 			props[UIButton.MOUSE_DOWN_DISTANCE] = 0;
 			_valueTfHolder = addChild( new UIButton(props) ) as UIButton;
 			_valueTfHolder.x = xAdj;
-			_valueTfHolder.y = bY;
+			_valueTfHolder.y = 0;//bY;
 			_valueTfHolder.mouseEnabled = false;
 			_valueTfHolder.mouseChildren = true;
 			_valueTfHolder.buttonMode = false;
@@ -169,15 +177,15 @@ package com.jonnybomb.mentalmodeler.display
 			props = {};
 			props[UIButton.WIDTH] = w;
 			props[UIButton.HEIGHT] = bHeight;
-			props[UIButton.ELLIPSE] = {tr:bEllipse, tl:bEllipse, br:0, bl:0};
+			props[UIButton.ELLIPSE] = {tr:0, tl:0, br:bEllipse, bl:bEllipse};
 			props[UIButton.USE_DROP_SHADOW] = false;
 			props[UIButton.MOUSE_DOWN_DISTANCE] = 0;
 			_removeButton = addChild(new UIButton(props)) as UIButton;
-			_removeButton.y = 0;
+			_removeButton.y = bY;//0;
 			_removeButton.x = xAdj;
-			var deleteIcon:Sprite = drawDeleteIcon();
+			var deleteIcon:Sprite = DrawingUtil.drawDeleteIcon();
 			deleteIcon.x = (w - deleteIcon.width)/2;
-			deleteIcon.y = (bHeight - deleteIcon.height)/2;
+			deleteIcon.y = Math.floor( (bHeight - deleteIcon.height)/2 );
 			deleteIcon.filters = [CMapConstants.INSET_BEVEL];
 			_removeButton.addLabel( deleteIcon );
 			_removeButton.addEventListener( MouseEvent.CLICK, onRemoveClick, false, 0, true);
@@ -195,8 +203,8 @@ package com.jonnybomb.mentalmodeler.display
 			textFormat.align = TextFormatAlign.CENTER;		
 			_valueTf = new TextField();
 			_valueTfHolder.addLabel( _valueTf );
-			_valueTf.x = w/2 - 1;//xAdj;
-			_valueTf.y = -1;
+			_valueTf.x = Math.floor(w/2 - 2);//xAdj;
+			_valueTf.y = 0;
 			_valueTf.maxChars = 4;
 			_valueTf.restrict = '0-9\-.';
 			_valueTf.filters = [ new DropShadowFilter(1, 180, 0, 0.3, 1, 1, 0.5) ];
@@ -218,7 +226,8 @@ package com.jonnybomb.mentalmodeler.display
 			_valueTf.mouseWheelEnabled = false;
 			_valueTf.autoSize = TextFieldAutoSize.CENTER;
 			
-			onSliderComplete(null);
+			//onSliderComplete(null);
+			setValue( getValue(), "slider", false);
 		}
 		
 		private function onRemoveClick(e:MouseEvent):void {
@@ -351,6 +360,10 @@ package com.jonnybomb.mentalmodeler.display
 				case 'tf':
 					_slider.setValue( value, false );
 					break;
+				case 'both':
+					_valueTf.text = _value.toString();
+					_slider.setValue( 0-value, false );
+					break;
 			}
 			if ( setInController ) {
 				_controller.lineValue = getLVD( value );
@@ -358,11 +371,7 @@ package com.jonnybomb.mentalmodeler.display
 		}
 		
 		private function getLVD( value:Number ):LineValueData {
-			var color:uint = value == 0 ? 0 : value < 0 ? 0xBF5513 : 0x0351A6;
-			var label:String = value == 0 ? '?' : value < 0 ? '-' : '+';
-			// LineValueData(stringValue:String, value:Number, label:String, size:int = 15, color:uint = 0x000000, x:Number = 0, y:Number = 0, letterSpacing:int = 0)
-			//new LineValueData(INFLUENCE_STRING_VALUE_NEGATIVE_LOW, INFLUENCE_VALUE_NEGATIVE_LOW, "-", 17, color);
-			var lvd:LineValueData = LineValueData.getLineValueData(value.toString(), value, label, 15, color, -1, -1);
+			var lvd:LineValueData = CMapUtils.getLineValueDataByValue( value );// LineValueData.getLineValueData(value.toString(), value, label, 15, color, -1, -1);
 			return lvd;
 		}
 		

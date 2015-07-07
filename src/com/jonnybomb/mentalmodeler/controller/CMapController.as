@@ -223,6 +223,7 @@ package com.jonnybomb.mentalmodeler.controller
 		public function doLoadMap():void { _io.loadFileRef(); }
 		public function doSaveMap():void { _io.saveFileRef(); }
 		public function doSaveScreenshot():void { _io.savePNG(); }
+		public function loadXML( url:String ):void { _io.loadXML(url); }
 		
 		public function eiDoLoad(xml:String):void
 		{
@@ -283,8 +284,11 @@ package com.jonnybomb.mentalmodeler.controller
 							{
 								ee = _model.getConceptById(eeId);
 								lineStringValue = XMLUtil.getTextNodeContent(node, CMapConstants.INFLUENCE_VALUE_NODE_NAME);
-								var lvd:LineValueData = CMapUtils.getLineValueDataByStringValue(lineStringValue, CMapConstants.LINE_VALUES);
-								//log("lineStringValue:"+lineStringValue ); 
+								var lineValue:Number = convertToNumber( lineStringValue );
+								//log('lineStringValue:'+lineStringValue+', lineValue:'+lineValue);
+								var lvd:LineValueData = CMapUtils.getLineValueDataByValue(lineValue);
+								//var lvd:LineValueData = CMapUtils.getLineValueDataByStringValue(lineStringValue, CMapConstants.LINE_VALUES);
+								trace('lvd:'+lvd);
 								var notes:String = XMLUtil.getTextNodeContent(node, "notes");
 								var confidence:Number = ( !isNaN(parseFloat(XMLUtil.getTextNodeContent(node, "confidence"))) ) ? confidence = parseFloat(XMLUtil.getTextNodeContent(node, "confidence")) : 0;
 								if (ee != null)
@@ -295,6 +299,35 @@ package com.jonnybomb.mentalmodeler.controller
 				}
 			}
 			updateAreaUsed();
+		}
+		
+		private function convertToNumber( lineStringValue:String ):Number {
+			var number:Number = 0;
+			switch (lineStringValue) {
+				case CMapConstants.INFLUENCE_STRING_VALUE_POSITIVE_HIGH:
+					number = CMapConstants.INFLUENCE_VALUE_POSITIVE_HIGH
+					break;
+				case CMapConstants.INFLUENCE_STRING_VALUE_POSITIVE_MEDIUM:
+					number = CMapConstants.INFLUENCE_VALUE_POSITIVE_MEDIUM
+					break;
+				case CMapConstants.INFLUENCE_STRING_VALUE_POSITIVE_LOW:
+					number = CMapConstants.INFLUENCE_VALUE_POSITIVE_LOW
+					break;
+				case CMapConstants.INFLUENCE_STRING_VALUE_NEGATIVE_HIGH:
+					number = CMapConstants.INFLUENCE_VALUE_NEGATIVE_HIGH
+					break;
+				case CMapConstants.INFLUENCE_STRING_VALUE_NEGATIVE_MEDIUM:
+					number = CMapConstants.INFLUENCE_VALUE_NEGATIVE_MEDIUM
+					break;
+				case CMapConstants.INFLUENCE_STRING_VALUE_NEGATIVE_LOW:
+					number = CMapConstants.INFLUENCE_VALUE_NEGATIVE_LOW
+					break;
+				case CMapConstants.INFLUENCE_STRING_VALUE_UNDEFINED:
+					number = LineValueData.UNDEFINED_VALUE;
+				default:
+					number = parseFloat( lineStringValue );
+			}
+			return number;
 		}
 		
 		public function updateAddNodeEnabled():void
@@ -557,32 +590,35 @@ package com.jonnybomb.mentalmodeler.controller
 				{
 					var globalPoint:Point = line.getLineValueGlobalPos(null);
 					var options:Vector.<LineValueData> = CMapConstants.LINE_VALUES;
-					showLineValueMenu(globalPoint.x, globalPoint.y, options.indexOf(line.value.value), line);
+					showLineValueMenu(globalPoint.x, globalPoint.y, line);
 				}
 			}
 		}
 		
-		public function showLineValueMenu(x:Number, y:Number, selectedIdx:Number, line:InfluenceLineDisplay):void
+		public function showLineValueMenu(x:Number, y:Number, /*selectedIdx:Number,*/ line:InfluenceLineDisplay = null):void
 		{
+			//trace('Controller > showLineValueMenu, line:'+line );
+			
 			if (!_lineValueMenu)
 				_lineValueMenu = _container.addChild(new LineValueMenuDisplay(this)) as LineValueMenuDisplay;
 			
+			
 			//trace("CmapController >> showLineValueMenu\n\tx:"+x+", y:"+y+", selectedIdx:"+selectedIdx+", line:"+line);
-			_model.curLine = line;
-			var h:int = CMapConstants.LINE_VALUE_HEIGHT;
+			//if ( line  ) setAsCurrentLine( line );
+			//_model.curLine = line;
+			var h:int = 130;//CMapConstants.LINE_VALUE_HEIGHT;
 			var localPoint:Point = _container.globalToLocal(new Point(x, y));
-			if (selectedIdx < 0)
-				selectedIdx = 2.5
-			var yAdj:Number = selectedIdx > -1 ? selectedIdx * (h - CMapConstants.LINE_VALUE_BORDER) : 0;
-			var _y:Number = localPoint.y - h/2; 
-			var yBot:Number = _y - yAdj + _lineValueMenu.height;
+			var yAdj:Number = 0;
+			var _y:Number = localPoint.y - h/2;//h/2; 
+			var yBot:Number = _y + h;
 			var top:int = 0;//CMapConstants.MENU_HEIGHT + 5;
-			if (_y - yAdj < top)
+			if (_y - yAdj < top) {
 				_y = top;
-			else if (yBot > stage.stageHeight)
-				_y = _y - yAdj - (yBot - (stage.stageHeight - CMapConstants.MENU_HEIGHT)) + h;
-			else		
+			} else if (yBot > stage.stageHeight  - CMapConstants.MENU_HEIGHT ) {
+				_y -= yBot - (stage.stageHeight  - CMapConstants.MENU_HEIGHT);
+			} else {		
 				_y = _y - yAdj;
+			}
 			_lineValueMenu.show(localPoint.x, _y);
 		}
 		
@@ -646,6 +682,7 @@ package com.jonnybomb.mentalmodeler.controller
 		
 		public function setAsCurrentLine(line:InfluenceLineDisplay = null):void
 		{
+			trace('Controller > setAsCurrentLine, line:'+line);
 			var _curLine:InfluenceLineDisplay = _model.curLine;
 			
 			//if (_curLine != null)
@@ -658,6 +695,7 @@ package com.jonnybomb.mentalmodeler.controller
 				_container.lines.setChildIndex(line, _container.lines.numChildren - 1);
 			}
 			_model.curLine = line;
+			trace('     _model.curLine:'+_model.curLine);
 		}
 		
 		private function removeAll():void
