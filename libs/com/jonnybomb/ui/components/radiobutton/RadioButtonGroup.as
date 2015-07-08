@@ -18,7 +18,7 @@ package com.jonnybomb.ui.components.radiobutton
 		public static const DOT_SPACING_HORZ:String = "_dotSpacingHorz";
 		public static const TOTAL_WIDTH:String = "_totalWidth";
 		
-		private var _spacingVert:int = 5;
+		private var _spacingVert:int = 2;//5;
 		private var _dotSpacingHorz:int = 3;
 		private var _totalWidth:int = 100;
 		
@@ -42,6 +42,9 @@ package com.jonnybomb.ui.components.radiobutton
 				addItems(items);
 		}
 		
+		public function getItemIndex(item:RadioButton):int { return _items.indexOf(item); }
+		public function getItemAt(idx:int):RadioButton { return _items[idx]; }
+		
 		public function get selectedValue():Object { return _selectedItem ? _selectedItem.value : null }
 		public function get selectedItem():RadioButton { return _selectedItem; }
 		public function get resetButton():UIButton { return _resetButton; }
@@ -60,6 +63,7 @@ package com.jonnybomb.ui.components.radiobutton
 		public function selectItemAt(index:int):void
 		{
 			if (_items.length > index)
+				if (index < 0 ) index = 0;
 				selectItem(_items[index]);
 		}
 		

@@ -4,6 +4,7 @@ package com.jonnybomb.mentalmodeler.display
 	import com.jonnybomb.mentalmodeler.controller.CMapController;
 	import com.jonnybomb.mentalmodeler.display.controlpanel.AbstractPanel;
 	import com.jonnybomb.mentalmodeler.display.controlpanel.ConfidencePanel;
+	import com.jonnybomb.mentalmodeler.display.controlpanel.GroupPanel;
 	import com.jonnybomb.mentalmodeler.display.controlpanel.NotesPanel;
 	import com.jonnybomb.mentalmodeler.display.controlpanel.TitlePanel;
 	import com.jonnybomb.mentalmodeler.display.controlpanel.UnitsPanel;
@@ -28,6 +29,7 @@ package com.jonnybomb.mentalmodeler.display
 		private var _unitsPanel:UnitsPanel;
 		private var _viewPanel:ViewPanel;
 		private var _confidencePanel:ConfidencePanel;
+		private var _groupPanel:GroupPanel;
 		private var _panels:Vector.<AbstractPanel> = new Vector.<AbstractPanel>();
 		
 		public function get controller():CMapController { return _controller; }
@@ -55,6 +57,7 @@ package com.jonnybomb.mentalmodeler.display
 													   { panelRef:"_confidencePanel", classRef:ConfidencePanel, title:"CONFIDENCE RATING" },								   
 													   { panelRef:"_notesPanel", classRef:NotesPanel, title:"NOTES" },				 
 													   { panelRef:"_unitsPanel", classRef:UnitsPanel, title:"UNIT OF MEASUREMENT" },
+													   { panelRef:"_groupPanel", classRef:GroupPanel, title:"GROUP" },
 													   { panelRef:"_viewPanel", classRef:ViewPanel, title:"VIEW FILTER" }
 			];
 			

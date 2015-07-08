@@ -119,6 +119,8 @@ package com.jonnybomb.mentalmodeler.controller
 			//flash.external.ExternalInterface.call("flashInitialized");
 		}
 		
+		public function setGroupName(name:String, idx:int):void { _model.setGroupName(name, idx); }
+		
 		public function addDebug():void
 		{
 			var props:Object = {color: 0x000000, size: 11, align: TextFormatAlign.LEFT, letterSpacing: 0, autoSize: TextFieldAutoSize.LEFT,

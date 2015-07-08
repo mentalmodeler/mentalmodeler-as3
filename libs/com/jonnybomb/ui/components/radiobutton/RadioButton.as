@@ -25,7 +25,7 @@ package com.jonnybomb.ui.components.radiobutton
 		private var _radius:int = 7;
 		private var _outlineColor:uint = 0x000000;
 		private var _upColor:uint = 0xCCCCCC; //0xC1C1C1;
-		private var _overColor:uint = 0x83A603; //0xE17138;
+		private var _overColor:uint = 0xE53E29; //0x83A603; //0xE17138;
 		private var _dotSpacingHorz:int = 5;
 		
 		private var _holder:Sprite;
@@ -50,9 +50,11 @@ package com.jonnybomb.ui.components.radiobutton
 			if (dotSpacingHorz != -9999)
 				_dotSpacingHorz = dotSpacingHorz;
 				
-			mouseChildren = false;
+			//mouseChildren = false;
 			init();	
 		}
+		
+		public function update(data:Object):void { _contentRenderer.update(data); }
 		
 		public function get value():Object { return _data.value; }
 		
@@ -100,7 +102,7 @@ package com.jonnybomb.ui.components.radiobutton
 			_selectedIcon.visible = value;
 			
 			if (value)
-				update(false);
+				updateDisplay(false);
 		}
 		
 		public function set enabled(value:Boolean):void
@@ -148,8 +150,8 @@ package com.jonnybomb.ui.components.radiobutton
 		
 		private function positionContent():void
 		{
-			DisplayObject(_contentRenderer).x = _radius * 2 + _dotSpacingHorz;
-			DisplayObject(_contentRenderer).y = (_holder.height - DisplayObject(_contentRenderer).height) / 2;
+			DisplayObject(_contentRenderer).x = Math.round(_radius * 2 + _dotSpacingHorz);
+			DisplayObject(_contentRenderer).y = Math.round( (_holder.height - DisplayObject(_contentRenderer).height) / 2 );
 		}
 		
 		private function drawButton():void
@@ -201,10 +203,10 @@ package com.jonnybomb.ui.components.radiobutton
 		
 		private function handleMouseOverOut(event:MouseEvent):void
 		{
-			update(event.type == MouseEvent.MOUSE_OVER);
+			updateDisplay(event.type == MouseEvent.MOUSE_OVER);
 		}
 		
-		private function update(over:Boolean):void
+		private function updateDisplay(over:Boolean):void
 		{
 			_overFill.visible = over;
 		}

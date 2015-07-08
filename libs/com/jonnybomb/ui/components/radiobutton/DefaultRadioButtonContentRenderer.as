@@ -19,6 +19,8 @@ package com.jonnybomb.ui.components.radiobutton
 			super();
 		}
 		
+		public function update(data:Object):void {}
+		
 		public function finalize():void
 		{
 			while(numChildren > 0)

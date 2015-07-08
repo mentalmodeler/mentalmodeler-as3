@@ -8,6 +8,7 @@ package com.jonnybomb.mentalmodeler.events
 		public static const ENABLE_ADD_NODE:String = "enableAddNode";
 		public static const STAGE_RESIZE:String = "stageResize";
 		public static const UPDATE_POSITIONS:String = "updatePositions";
+		public static const MAP_LOADED:String = "mapLoaded";
 		
 		private var _data:Object;
 		

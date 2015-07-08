@@ -1,6 +1,9 @@
 package com.jonnybomb.mentalmodeler.display.controlpanel
 {
+	import com.jonnybomb.mentalmodeler.display.ConceptDisplay;
 	import com.jonnybomb.mentalmodeler.display.ControlPanelDisplay;
+	import com.jonnybomb.mentalmodeler.display.INotable;
+	import com.jonnybomb.mentalmodeler.display.InfluenceLineDisplay;
 	import com.jonnybomb.mentalmodeler.model.data.ColorData;
 	import com.jonnybomb.mentalmodeler.model.data.ColorExtended;
 	import com.jonnybomb.mentalmodeler.utils.CMapUtils;
@@ -137,5 +140,8 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			return s;
 		}
 		
+		protected function getCurCd():ConceptDisplay { return _controlPanel.controller.model.curCd; }
+		protected function getCurLine():InfluenceLineDisplay { return _controlPanel.controller.model.curLine; }
+		protected function getCurSelected():INotable { return _controlPanel.controller.model.curSelected; }
 	}
 }

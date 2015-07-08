@@ -34,6 +34,9 @@ package com.jonnybomb.mentalmodeler.model
 		public function get cds():Vector.<ConceptDisplay> { return _cds; }
 		public function get lines():Vector.<InfluenceLineDisplay> { return _lines; }
 		
+		private var _groupNames:Vector.<String> = new <String>["", "", "", "", "", ""];
+		public function get groupNames():Vector.<String> { return _groupNames.concat(); }
+		
 		public function get curLine():InfluenceLineDisplay { return _curLine; }
 		public function set curLine(value:InfluenceLineDisplay):void
 		{
@@ -85,6 +88,13 @@ package com.jonnybomb.mentalmodeler.model
 			_lines = new Vector.<InfluenceLineDisplay>();
 		}
 		
+		public function setGroupName(name:String, idx:int):void
+		{
+			if (idx >= 0 && idx < _groupNames.length)
+				_groupNames[idx] = name;
+		}
+		
+		public function elementGroupChange():void { dispatchEvent(new ModelEvent(ModelEvent.ELEMENT_GROUP_CHANGE)); }
 		public function elementTitleChange():void { dispatchEvent(new ModelEvent(ModelEvent.ELEMENT_TITLE_CHANGE)); }
 		public function lineValueChange():void { dispatchEvent(new ModelEvent(ModelEvent.LINE_VALUE_CHANGE)); }
 		

@@ -132,7 +132,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 				_controlPanel.updateLayout();
 		}
 		
-		private function getCurCd():ConceptDisplay { return _controlPanel.controller.model.curCd; }
-		private function getCurLine():InfluenceLineDisplay { return _controlPanel.controller.model.curLine; }
+		//private function getCurCd():ConceptDisplay { return _controlPanel.controller.model.curCd; }
+		//private function getCurLine():InfluenceLineDisplay { return _controlPanel.controller.model.curLine; }
 	}
 }

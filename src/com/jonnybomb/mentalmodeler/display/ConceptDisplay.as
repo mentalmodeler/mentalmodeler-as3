@@ -63,7 +63,10 @@ package com.jonnybomb.mentalmodeler.display
 		private var _isOver:Boolean = false;
 		private var _isSelected:Boolean = false;
 		private var _buttonsFrozen:Boolean = false;
-		private var _group:int = -1;
+		//private var _group:int = -1;
+		protected var _group:int = 0;
+		public function get group():int { return _group; }
+		public function set group(value:int):void { _group = value; draw(_width, _height);}
 		
 		private var _notes:String = "";
 		public function get notes():String { return _notes; }
@@ -109,7 +112,7 @@ package com.jonnybomb.mentalmodeler.display
 			toggleButtons(true);
 		}
 		
-		public function init(idx:int = -1, title:String = "", notes:String = "", units:String = "", group:int = -1):void
+		public function init(idx:int = -1, title:String = "", notes:String = "", units:String = "", group:int = 0):void
 		{
 			_idx = (idx == -1) ? creationIdx++ : idx;
 			
@@ -192,11 +195,11 @@ package com.jonnybomb.mentalmodeler.display
 			DrawingUtil.drawRect(_hit, w, h + CMapConstants.BUTTON_HEIGHT, ColorData.getColor(ColorData.CD_HIT), 0, _ellipse);
 			_hit.y = - CMapConstants.BUTTON_HEIGHT/2;
 			
-			DrawingUtil.drawRect(_outline, w, h, ColorData.getColor(ColorData.CD_OUTLINE), _outlineStroke, _ellipse);
+			DrawingUtil.drawRect(_outline, w, h, getOutlineColor()/*ColorData.getColor(ColorData.CD_OUTLINE)*/, _outlineStroke, _ellipse);
 			
 			_fill.x = stroke/2;
 			_fill.y = stroke/2;
-			DrawingUtil.drawRect(_fill, w - stroke, h - stroke, ColorData.getColor(ColorData.CD_FILL), 0, _ellipse - stroke/2);
+			DrawingUtil.drawRect(_fill, w - stroke, h - stroke, getFillColor()/*ColorData.getColor(ColorData.CD_FILL)*/, 0, _ellipse - stroke/2);
 		}
 		
 		private function addButtons():void
@@ -223,8 +226,16 @@ package com.jonnybomb.mentalmodeler.display
 		private function update():void
 		{
 			//_hit.visible = _isOver;
+			var doSelectedColor:Boolean = _isSelected || (_isOver && _draggingLine != null && _draggingLine != this)
 			toggleButtons(_isOver && _draggingLine == null);
+			var colorData:ColorData
+			if (doSelectedColor)
+				colorData = getOutlineColor(true);
+			else
+				colorData = getOutlineColor();
 			
+			DrawingUtil.drawRect(_outline, _width, _height, colorData ,_outlineStroke, _ellipse);
+			/*
 			var doSelectedColor:Boolean = _isSelected || (_isOver && _draggingLine != this && _draggingLine != null);
 			var colorData:ColorData
 			if (doSelectedColor)
@@ -240,6 +251,31 @@ package com.jonnybomb.mentalmodeler.display
 			}
 			
 			DrawingUtil.drawRect(_outline, _width, _height, colorData ,_outlineStroke, _ellipse);
+			*/
+		}
+		
+		protected function getFillColor():ColorData
+		{
+			var type:String = ColorData.CD_FILL + _group.toString();
+			var cd:ColorData = ColorData.getColor(type);
+			trace('getFillColor, type:'+type+', cd:'+cd);
+			return cd;
+		}
+		
+		protected function getLineLinkColor():ColorData
+		{
+			var type:String = ColorData.CD_LINE_LINK + _group.toString();
+			var cd:ColorData = ColorData.getColor(type);
+			trace('getLineLinkColor, _group:'+_group+', type:'+type+', cd:'+cd);
+			return cd;
+		}
+		
+		protected function getOutlineColor(isSelected:Boolean = false):ColorData
+		{
+			if (isSelected)
+				return ColorData.getColor(ColorData.CD_OUTLINE_OVER + _group);	
+			else
+				return ColorData.getColor(ColorData.CD_OUTLINE)
 		}
 		
 		private function handleRollOverOut(e:MouseEvent):void

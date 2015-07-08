@@ -8,6 +8,7 @@ package com.jonnybomb.mentalmodeler.events
 		public static const SELECTED_CD_CHANGE:String = "selectedCdChange";
 		public static const SELECTED_LINE_CHANGE:String = "selectedLineChange";
 		public static const ELEMENT_TITLE_CHANGE:String = "elementTitleChange";
+		public static const ELEMENT_GROUP_CHANGE:String = "elementGroupChange";
 		public static const LINE_VALUE_CHANGE:String = "lineValueChange";
 		
 		private var _data:Object;
