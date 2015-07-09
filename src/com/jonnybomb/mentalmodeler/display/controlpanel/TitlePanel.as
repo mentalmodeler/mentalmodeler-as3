@@ -19,6 +19,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.filters.DropShadowFilter;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFieldType;
@@ -36,17 +37,23 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		private var _stripe:Shape;
 		private var _curNotable:INotable;
 		private var _textScrollPanel:TextScrollPanel;
+		private var _lastColorType:int = 0;
 		
 		public function TitlePanel(controlPanel:ControlPanelDisplay, title:String, w:int, h:int)
 		{
 			super(controlPanel, title, w, h);
 			_maxHeight = 100;
-			_minHeight = 10;
+			_minHeight = 0;
 		}
 		
 		override public function get height():Number
 		{
-			return _header.height;
+			var h:Number = _header.height;
+			if ( outOfRange(h) ) {
+				h = normalizeHeight( h );
+				_header.height = h 
+			}
+			return h;
 			/*	
 			if (!_tf.visible)
 				return _header.height	
@@ -57,15 +64,13 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		override public function setSize(w:Number, h:Number):void
 		{
 			_sizeChanged = (w != _width && w != -1) || (h != _height && h != -1);
-			
 			if (w > -1)
 				_width = w;
 			if (h > -1)
 				_height = normalizeHeight(h);
 			
 			_header.height = _height;
-			_header.width= _width;
-			
+			_header.width = _width;
 			if (_sizeChanged)
 				_textScrollPanel.setSize(_width - TextScrollPanel.TF_PADDING, _header.height - TF_PADDING*2);
 		}
@@ -96,6 +101,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			};
 			
 			var tf:TextField = CMapUtils.createTextField("", props);
+			tf.filters = [ new DropShadowFilter(1, 90, 0, 0.75, 1, 1, 0.5, 2) ];
 			//_tf = addChild(CMapUtils.createTextField("", props)) as TextField;
 			//_tf.x = _tf.y = _tfPadding;
 			
@@ -104,6 +110,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			_controlPanel.controller.model.addEventListener(ModelEvent.SELECTED_CD_CHANGE, handleSelectedCDChange, false, 0, true);
 			_controlPanel.controller.model.addEventListener(ModelEvent.SELECTED_LINE_CHANGE, handleSelectedLineChange, false, 0, true);
 			_controlPanel.controller.model.addEventListener(ModelEvent.ELEMENT_TITLE_CHANGE, handleElementTitleChange, false, 0, true);
+			_controlPanel.controller.model.addEventListener(ModelEvent.ELEMENT_GROUP_CHANGE, handleElementGroupChange, false, 0, true);
 			_controlPanel.controller.model.addEventListener(ModelEvent.LINE_VALUE_CHANGE, handleLineValueChange, false, 0, true);
 			
 			update(TYPE_NULL, false);
@@ -129,7 +136,6 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			}
 			else if (type == TYPE_CD) // CD
 				s = "<b>"+ (_curNotable.title != "" ? _curNotable.title : "[Component]") +"</b>";
-			
 			return s;
 		}
 		
@@ -141,6 +147,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 				var s:String = getTitle(type)
 				_textScrollPanel.visible = true;
 				_textScrollPanel.tf.htmlText = s;
+				//trace('_textScrollPanel.tf.text:'+_textScrollPanel.tf.text+', _textScrollPanel.tf.height:'+_textScrollPanel.tf.height);
 				setSize(-1, Math.ceil(_textScrollPanel.tf.height) + _tfPadding*2);
 				//setSize(-1, Math.ceil(_tf.height) + _tfPadding*2);
 			}
@@ -154,6 +161,21 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			
 			if (updateLayout)
 				_controlPanel.updateLayout();
+		}
+		
+		private function handleElementGroupChange(e:ModelEvent):void
+		{
+			var curCd:ConceptDisplay = getCurCd();
+			if (_curNotable && _curNotable == curCd)
+				draw(curCd.group);
+		}
+		
+		private function draw(type:int):void
+		{
+			_lastColorType = type;
+			var name:String = ColorData.TITLE_BG + type; 
+			var cd:ColorData = ColorData.getColor(name);
+			DrawingUtil.drawRect(_header, _width, _height, cd, 0, 0);
 		}
 		
 		private function handleElementTitleChange(e:ModelEvent):void
@@ -188,11 +210,13 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			//trace("TitlePanel >> handleSelectedLineChange, line:"+line+", cd:"+cd);
 			if (line)
 			{
+				_minHeight = 37;
 				_curNotable = line;
 				update(TYPE_LINE);
 				_textScrollPanel.updateTextFromChange(true);
 			}
 			else {
+				_minHeight = 0;
 				_curNotable = null;
 				update(TYPE_LINE);
 			}
@@ -215,12 +239,14 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 				_curNotable = cd;
 				update(TYPE_CD);
 				_textScrollPanel.updateTextFromChange(true);
+				_minHeight = 37;
 			}
 			else if (!getCurLine())
 			{
 				_curNotable = null;
 				update(TYPE_CD);
 				_textScrollPanel.updateTextFromChange(true);
+				_minHeight = 0;
 			}
 		}
 		

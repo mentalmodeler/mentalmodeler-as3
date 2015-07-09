@@ -25,7 +25,7 @@ package com.jonnybomb.ui.components.radiobutton
 		private var _radius:int = 7;
 		private var _outlineColor:uint = 0x000000;
 		private var _upColor:uint = 0xCCCCCC; //0xC1C1C1;
-		private var _overColor:uint = 0xE53E29; //0x83A603; //0xE17138;
+		private var _overColor:uint = 0x83A603; //0xE53E29; //0x83A603; //0xE17138;
 		private var _dotSpacingHorz:int = 5;
 		
 		private var _holder:Sprite;

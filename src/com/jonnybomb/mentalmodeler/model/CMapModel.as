@@ -163,10 +163,15 @@ package com.jonnybomb.mentalmodeler.model
 			var relationship:XML;
 			var relationships:XML;
 			var xml:XML = <{appNodeName}></{appNodeName}>
+			var groupNames:XML = <groupNames></groupNames>;
 			var info:XML = <info><version>{VERSION}</version><date>{new Date().toString()}</date><author>{author}</author><description>{description}</description></info>
 			var concepts:XML = <{componentsNodeName}></{componentsNodeName}>;
 			
 			xml.appendChild(info);
+			
+			for (i = 0; i < _groupNames.length; i++)
+				groupNames.appendChild(<groupName index={i}>{XMLUtil.cdata(_groupNames[i])}</groupName>)
+			xml.appendChild(groupNames);
 			
 			// create concepts wrapper node
 			xml.appendChild(concepts);

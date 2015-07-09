@@ -257,6 +257,10 @@ package com.jonnybomb.mentalmodeler.controller
 			CMapModel.author = XMLUtil.getTextNodeContent(info, "author", true);
 			CMapModel.description = XMLUtil.getTextNodeContent(info, "description", true);
 			
+			var groupNames:XMLList = xml.groupNames.groupName;
+			for each(var nameNode:XML in groupNames)
+				_model.setGroupName(nameNode.text().toString(), parseInt(nameNode.@index));
+			
 			// add concept displays
 			for each (component in components)
 				addNewConcept(component);
@@ -290,7 +294,7 @@ package com.jonnybomb.mentalmodeler.controller
 								//log('lineStringValue:'+lineStringValue+', lineValue:'+lineValue);
 								var lvd:LineValueData = CMapUtils.getLineValueDataByValue(lineValue);
 								//var lvd:LineValueData = CMapUtils.getLineValueDataByStringValue(lineStringValue, CMapConstants.LINE_VALUES);
-								trace('lvd:'+lvd);
+								//trace('lvd:'+lvd);
 								var notes:String = XMLUtil.getTextNodeContent(node, "notes");
 								var confidence:Number = ( !isNaN(parseFloat(XMLUtil.getTextNodeContent(node, "confidence"))) ) ? confidence = parseFloat(XMLUtil.getTextNodeContent(node, "confidence")) : 0;
 								if (ee != null)

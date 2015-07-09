@@ -67,7 +67,6 @@ package com.jonnybomb.mentalmodeler.display
 				this[o.panelRef] = addChild( new o.classRef(this, o.title, _width, _height) ) as o.classRef;
 				_panels.push(this[o.panelRef]);
 			}
-			
 			for each (var panel:AbstractPanel in _panels)
 				panel.init();
 				
@@ -92,7 +91,7 @@ package com.jonnybomb.mentalmodeler.display
 				if (panel.enabled)
 				{
 					panel.y = nY;
-					//trace("\tpanel:"+panel+", panel.enabled:"+panel.enabled+", panel.y:"+panel.y+", panel.height:"+panel.height);
+					//("\tpanel:"+panel+", panel.enabled:"+panel.enabled+", panel.y:"+panel.y+", panel.height:"+panel.height);
 					nY += panel.height;
 				}
 			}

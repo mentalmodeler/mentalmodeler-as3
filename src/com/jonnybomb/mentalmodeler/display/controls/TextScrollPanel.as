@@ -43,7 +43,6 @@ package com.jonnybomb.mentalmodeler.display.controls
 		
 		public function setSize(w:Number, h:Number):void
 		{
-			//trace("TextScrollPanel, setSize, w:"+w+", h:"+h+", _width:"+_width+", _height:"+_height);
 			if ( (w > -1 && w != _width) || (h > -1 && h != _height))
 			{
 				var vScroll:Number = _scrollPanel.vScroll;
@@ -57,6 +56,7 @@ package com.jonnybomb.mentalmodeler.display.controls
 				_scrollPanel.vScroll = scrollPct * scrollMax;
 				//trace("\tAFTER vScroll:"+_scrollPanel.vScroll+", scrollMax:"+scrollMax+", scrollPct:"+scrollPct);
 			}
+			//trace("TextScrollPanel > setSize, parent:"+this.parent+", w:"+w+", h:"+h+", _width:"+_width+", _height:"+_height);
 		}
 		
 		private function init():void

@@ -66,6 +66,15 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			return value;
 		}
 		
+		protected function outOfRange(value:Number):Boolean {
+			var out:Boolean = false;
+			if (_minHeight > -1 && value < _minHeight)
+				out = true;
+			else if (_maxHeight > -1 && value > _maxHeight)
+				out = true;
+			return out;
+		}
+		
 		public function get enabled():Boolean { return _enabled; }
 		public function set enabled(value:Boolean):void
 		{

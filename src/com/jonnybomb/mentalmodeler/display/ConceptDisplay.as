@@ -258,7 +258,7 @@ package com.jonnybomb.mentalmodeler.display
 		{
 			var type:String = ColorData.CD_FILL + _group.toString();
 			var cd:ColorData = ColorData.getColor(type);
-			trace('getFillColor, type:'+type+', cd:'+cd);
+			//trace('getFillColor, type:'+type+', cd:'+cd);
 			return cd;
 		}
 		

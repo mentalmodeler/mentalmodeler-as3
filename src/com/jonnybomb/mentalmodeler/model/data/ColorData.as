@@ -212,7 +212,7 @@ package com.jonnybomb.mentalmodeler.model.data
 				
 				case TITLE_BG_0:
 					cd = new ColorData();
-					cd.fill =  new GradientColorData([0x992C1E, 0xE53E29], [1, 1], [30, 255]); 
+					cd.fill =  new GradientColorData([0x657F02, 0xA1CC04], [1, 1], [30, 255]); 
 					break;
 				case TITLE_BG_1:
 					cd = new ColorData();
@@ -288,11 +288,11 @@ package com.jonnybomb.mentalmodeler.model.data
 					break;
 				case CD_LINE_LINK:
 					cd = new ColorData();
-					cd.fill = new ColorExtended(0xE53E29, 1);
+					cd.fill = new ColorExtended(0x83A603, 1);
 					break;
 				case CD_LINE_LINK_0:
 					cd = new ColorData();
-					cd.stroke = new ColorExtended(0xE53E29, 1);
+					cd.stroke = new ColorExtended(0x83A603, 1);
 					//cd.fill = new ColorExtended(0xA6E529, 0.5);
 					break;
 				case CD_LINE_LINK_1:
@@ -323,12 +323,12 @@ package com.jonnybomb.mentalmodeler.model.data
 				case CD_OUTLINE_OVER:
 					cd = new ColorData();
 					cd.stroke = new ColorExtended(0x000000, 1); 
-					cd.fill = new ColorExtended(0xE53E29, 1);
+					cd.fill = new ColorExtended(0x83A603, 1);
 					break;
 				case CD_OUTLINE_OVER_0:
 					cd = new ColorData();
 					cd.stroke = new ColorExtended(0x000000, 1); 
-					cd.fill = new ColorExtended(0xE53E29, 1);
+					cd.fill = new ColorExtended(/*0x83A603*/0x83A603, 1);
 					break;
 				case CD_OUTLINE_OVER_1:
 					cd = new ColorData();
