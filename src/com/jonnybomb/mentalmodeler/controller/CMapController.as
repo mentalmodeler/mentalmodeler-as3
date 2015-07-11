@@ -305,6 +305,7 @@ package com.jonnybomb.mentalmodeler.controller
 				}
 			}
 			updateAreaUsed();
+			dispatchEvent(new ControllerEvent(ControllerEvent.MAP_LOADED));
 		}
 		
 		private function convertToNumber( lineStringValue:String ):Number {
@@ -380,8 +381,9 @@ package com.jonnybomb.mentalmodeler.controller
 			var title:String = XMLUtil.hasTextNodeWithContent(data, "name") != "" ? XMLUtil.getTextNodeContent(data, "name") : nodePrefillText;
 			var notes:String = XMLUtil.getTextNodeContent(data, "notes");
 			var units:String = XMLUtil.getTextNodeContent(data, "units");
+			var group:int = XMLUtil.hasTextNodeWithContent(data, "group") != "" ? parseInt(XMLUtil.getTextNodeContent(data, "group")) : -1;
 			
-			cd.init(idx, title, notes, units);
+			cd.init(idx, title, notes, units, group);
 			_cds.push(cd);
 			updateAddNodeEnabled();
 			
@@ -688,7 +690,7 @@ package com.jonnybomb.mentalmodeler.controller
 		
 		public function setAsCurrentLine(line:InfluenceLineDisplay = null):void
 		{
-			trace('Controller > setAsCurrentLine, line:'+line);
+			//trace('Controller > setAsCurrentLine, line:'+line);
 			var _curLine:InfluenceLineDisplay = _model.curLine;
 			
 			//if (_curLine != null)
@@ -701,7 +703,7 @@ package com.jonnybomb.mentalmodeler.controller
 				_container.lines.setChildIndex(line, _container.lines.numChildren - 1);
 			}
 			_model.curLine = line;
-			trace('     _model.curLine:'+_model.curLine);
+			//trace('     _model.curLine:'+_model.curLine);
 		}
 		
 		private function removeAll():void

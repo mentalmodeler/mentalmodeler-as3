@@ -18,7 +18,7 @@ package com.jonnybomb.ui.components.radiobutton
 		public static const DOT_SPACING_HORZ:String = "_dotSpacingHorz";
 		public static const TOTAL_WIDTH:String = "_totalWidth";
 		
-		private var _spacingVert:int = 2;//5;
+		private var _spacingVert:int = 5;
 		private var _dotSpacingHorz:int = 3;
 		private var _totalWidth:int = 100;
 		

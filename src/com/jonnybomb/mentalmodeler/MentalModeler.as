@@ -32,7 +32,7 @@ package com.jonnybomb.mentalmodeler
 	{
 		public static const IN_SUITE:Boolean = false;
 		public static const FULL_SCREEN:Boolean = true;//true;
-		public static const MMP:String = '<![CDATA[H+]]>';
+		public static const MMP:String = '../mmp/fish_wetland_groups.mmp';
 		
 		//private var _api:IInteractiveObjectAPI;
 		private var _initCompleteCallback:Function;
@@ -73,7 +73,7 @@ package com.jonnybomb.mentalmodeler
 				init(null);
 				
 				if (MMP is String && MMP.length > 0 ) {
-					_controller.loadXML('../mmp/fish_wetland2.mmp');
+					_controller.loadXML( MMP );
 				}
 			}
 		}

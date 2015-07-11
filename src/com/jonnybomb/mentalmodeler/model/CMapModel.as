@@ -184,6 +184,7 @@ package com.jonnybomb.mentalmodeler.model
 							<name>{XMLUtil.cdata(cd.title)}</name>
 							<notes>{XMLUtil.cdata(cd.notes)}</notes>
 							<units>{XMLUtil.cdata(cd.units)}</units>
+							<group>{cd.group}</group>
 							<x>{cd.x}</x>
 							<y>{cd.y}</y>
 					   </{componentNodeName}>;

@@ -22,10 +22,6 @@ package com.jonnybomb.ui.components.radiobutton
 			this.contentRendererData = contentRendererData;
 			this.selected = selected;
 			this.label = label;
-			trace("label:"+label);
-			trace("this.label:"+this.label);
-			
-			
 		}
 		
 		public function finalize():void
@@ -53,10 +49,8 @@ package com.jonnybomb.ui.components.radiobutton
 				return '';
 			}
 			var s:String = _label.concat();
-			trace('s:'+s);
 			if (s == "" && "toString" in value && value["toString"] is Function)
 				s = value["toString"]();
-			trace('  _label:'+_label);
 			return s;
 		}
 	}

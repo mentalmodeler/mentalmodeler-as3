@@ -76,7 +76,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 					new RadioButtonData(VIEW_LINES_TO, "View Only Lines To", false, {})
 				]
 			var format:Object = {};
-			format[RadioButtonGroup.SPACING_VERT] = 8;
+			format[RadioButtonGroup.SPACING_VERT] = 2;
 			format[RadioButtonGroup.DOT_SPACING_HORZ] = 3;
 			format[RadioButtonGroup.TOTAL_WIDTH] = totalWidth;
 			_radioGroup = _cdViewMode.addChild(new RadioButtonGroup(items, null, format)) as RadioButtonGroup;

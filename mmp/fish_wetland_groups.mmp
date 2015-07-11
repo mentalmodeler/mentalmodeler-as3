@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8'?><mentalModeler>
+  <info>
+    <version>1.0</version>
+    <date>Sat Jul 11 10:06:48 GMT-0500 2015</date>
+    <author/>
+    <description/>
+  </info>
+  <groupNames>
+    <groupName index="0"><![CDATA[]]></groupName>
+    <groupName index="1"><![CDATA[Dirty things]]></groupName>
+    <groupName index="2"><![CDATA[]]></groupName>
+    <groupName index="3"><![CDATA[people things]]></groupName>
+    <groupName index="4"><![CDATA[Animals]]></groupName>
+    <groupName index="5"><![CDATA[people things]]></groupName>
+  </groupNames>
+  <concepts>
+    <concept>
+      <id>1</id>
+      <name><![CDATA[Fish population]]></name>
+      <notes><![CDATA[]]></notes>
+      <units><![CDATA[]]></units>
+      <group>4</group>
+      <x>604</x>
+      <y>200</y>
+      <relationships>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>0.95</influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>2</id>
+      <name><![CDATA[Amount of wetland]]></name>
+      <notes><![CDATA[]]></notes>
+      <units><![CDATA[]]></units>
+      <group>0</group>
+      <x>200</x>
+      <y>205</y>
+      <relationships>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Fish population]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>0.95</influence>
+        </relationship>
+        <relationship>
+          <id>8</id>
+          <name><![CDATA[Pollution]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>-0.25</influence>
+        </relationship>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>0.62</influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>6</id>
+      <name><![CDATA[Enforcement of laws]]></name>
+      <notes><![CDATA[]]></notes>
+      <units><![CDATA[]]></units>
+      <group>3</group>
+      <x>395</x>
+      <y>44</y>
+      <relationships>
+        <relationship>
+          <id>2</id>
+          <name><![CDATA[Amount of wetland]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>0.25</influence>
+        </relationship>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Fish population]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>0.62</influence>
+        </relationship>
+        <relationship>
+          <id>8</id>
+          <name><![CDATA[Pollution]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>-0.62</influence>
+        </relationship>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>-0.25</influence>
+        </relationship>
+      </relationships>
+    </concept>
+    <concept>
+      <id>7</id>
+      <name><![CDATA[Livelihood]]></name>
+      <notes><![CDATA[]]></notes>
+      <units><![CDATA[]]></units>
+      <group>3</group>
+      <x>682</x>
+      <y>458</y>
+    </concept>
+    <concept>
+      <id>8</id>
+      <name><![CDATA[Pollution]]></name>
+      <notes><![CDATA[]]></notes>
+      <units><![CDATA[]]></units>
+      <group>1</group>
+      <x>281</x>
+      <y>467</y>
+      <relationships>
+        <relationship>
+          <id>2</id>
+          <name><![CDATA[Amount of wetland]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>-0.25</influence>
+        </relationship>
+        <relationship>
+          <id>1</id>
+          <name><![CDATA[Fish population]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>-1</influence>
+        </relationship>
+        <relationship>
+          <id>7</id>
+          <name><![CDATA[Livelihood]]></name>
+          <notes><![CDATA[]]></notes>
+          <confidence>0</confidence>
+          <influence>-0.25</influence>
+        </relationship>
+      </relationships>
+    </concept>
+  </concepts>
+</mentalModeler>

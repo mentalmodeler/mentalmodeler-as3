@@ -42,7 +42,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			}
 				
 			var format:Object = {};
-			format[RadioButtonGroup.SPACING_VERT] = 6;
+			format[RadioButtonGroup.SPACING_VERT] = 2;
 			format[RadioButtonGroup.DOT_SPACING_HORZ] = 5;
 			format[RadioButtonGroup.TOTAL_WIDTH] = totalWidth;
 			_radioGroup = addChild(new RadioButtonGroup(items, GroupRadioButtonContentRenderer, format)) as RadioButtonGroup;
@@ -61,13 +61,11 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		private function handleMapLoaded(e:ControllerEvent):void
 		{
 			var groupNames:Vector.<String> = _controlPanel.controller.model.groupNames;
-			for (var i:int = 0; i < groupNames.length; i++)
-			{
+			for (var i:int = 0; i < groupNames.length; i++) {
 				var rb:RadioButton = _radioGroup.getItemAt(i);
 				if (rb)
 					rb.update( {label:groupNames[i]} )
 			}
-			
 		}
 		
 		private function handleGroupNameChange(e:Event):void
