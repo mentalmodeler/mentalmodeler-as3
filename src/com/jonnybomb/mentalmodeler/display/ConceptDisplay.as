@@ -112,10 +112,10 @@ package com.jonnybomb.mentalmodeler.display
 			toggleButtons(true);
 		}
 		
-		public function init(idx:int = -1, title:String = "", notes:String = "", units:String = "", group:int = 0):void
+		public function init(idx:int = -1, title:String = "", notes:String = "", units:String = "", group:int = CMapConstants.GROUP_DEFAULT):void
 		{
 			_idx = (idx == -1) ? creationIdx++ : idx;
-			
+			trace("group:"+group);
 			_group = group;
 			mouseEnabled = false;
 			filters = [CMapConstants.CD_DROP_SHADOW];
@@ -188,17 +188,22 @@ package com.jonnybomb.mentalmodeler.display
 		
 		private function draw(w:int, h:int):void
 		{
+			trace('ConceptDisplay > draw');
+			
 			_outlineStroke = CMapConstants.CD_OUTLINE_STROKE;
 			_ellipse = CMapConstants.CD_ELLIPSE;
 			var stroke:int = (_outlineStroke + CMapConstants.CD_STATUSFILL_STROKE) * 2;
 			
+			trace('     ColorData.getColor(ColorData.CD_HIT):'+ColorData.getColor(ColorData.CD_HIT) );
 			DrawingUtil.drawRect(_hit, w, h + CMapConstants.BUTTON_HEIGHT, ColorData.getColor(ColorData.CD_HIT), 0, _ellipse);
 			_hit.y = - CMapConstants.BUTTON_HEIGHT/2;
 			
-			DrawingUtil.drawRect(_outline, w, h, getOutlineColor()/*ColorData.getColor(ColorData.CD_OUTLINE)*/, _outlineStroke, _ellipse);
+			trace('      getOutlineColor('+_isSelected+'):'+getOutlineColor(_isSelected));
+			DrawingUtil.drawRect(_outline, w, h, getOutlineColor(_isSelected)/*ColorData.getColor(ColorData.CD_OUTLINE)*/, _outlineStroke, _ellipse);
 			
 			_fill.x = stroke/2;
 			_fill.y = stroke/2;
+			trace('      getFillColor():'+getFillColor());
 			DrawingUtil.drawRect(_fill, w - stroke, h - stroke, getFillColor()/*ColorData.getColor(ColorData.CD_FILL)*/, 0, _ellipse - stroke/2);
 		}
 		
@@ -258,7 +263,7 @@ package com.jonnybomb.mentalmodeler.display
 		{
 			var type:String = ColorData.CD_FILL + _group.toString();
 			var cd:ColorData = ColorData.getColor(type);
-			//trace('getFillColor, type:'+type+', cd:'+cd);
+			trace('getFillColor, type:'+type+', cd:'+cd);
 			return cd;
 		}
 		

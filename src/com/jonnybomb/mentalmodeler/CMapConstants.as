@@ -46,6 +46,7 @@ package com.jonnybomb.mentalmodeler
 		public static var FILE_FILTER_NAME:String = "MentalModeler file";
 		public static var FILE_EXTENSION:String = ".mmp";
 		
+		public static const GROUP_DEFAULT:int = 0;
 		public static const CD_SELECTED_GLOW:GlowFilter = new GlowFilter(0xFF0000, 1, 5, 5, 2, BitmapFilterQuality.MEDIUM);
 		public static const CD_DROP_SHADOW:DropShadowFilter = new DropShadowFilter(3, 90/*75*/, 0x000000, 1, 8, 8, 0.5, BitmapFilterQuality.MEDIUM);
 		public static const INSET_BEVEL:BevelFilter = new BevelFilter(1, 270, 0xFFFFFF, 0, 0x000000, 0.5, 1, 1, 2, BitmapFilterQuality.LOW, BitmapFilterType.OUTER);

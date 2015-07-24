@@ -381,7 +381,7 @@ package com.jonnybomb.mentalmodeler.controller
 			var title:String = XMLUtil.hasTextNodeWithContent(data, "name") != "" ? XMLUtil.getTextNodeContent(data, "name") : nodePrefillText;
 			var notes:String = XMLUtil.getTextNodeContent(data, "notes");
 			var units:String = XMLUtil.getTextNodeContent(data, "units");
-			var group:int = XMLUtil.hasTextNodeWithContent(data, "group") != "" ? parseInt(XMLUtil.getTextNodeContent(data, "group")) : -1;
+			var group:int = XMLUtil.hasTextNodeWithContent(data, "group") != "" ? parseInt(XMLUtil.getTextNodeContent(data, "group")) : CMapConstants.GROUP_DEFAULT;
 			
 			cd.init(idx, title, notes, units, group);
 			_cds.push(cd);

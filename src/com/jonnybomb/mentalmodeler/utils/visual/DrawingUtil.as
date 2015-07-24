@@ -49,8 +49,8 @@ package com.jonnybomb.mentalmodeler.utils.visual
 			var bodyHeight:int = 8;
 			var topHeight:int = 2;
 			var topTopHeight:int = 1;
-			var topBrimExtra:int = 2;
-			var topTopBrimExtra:int = 1;
+			var topBrimExtra:int = 1;
+			var topTopBrimExtra:int = 2;
 			var spacing:int = 1;
 			var bodyTop:int = topTopHeight + topHeight + spacing;		
 			var s:Sprite = new Sprite();

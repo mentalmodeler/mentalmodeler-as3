@@ -1,5 +1,6 @@
 package com.jonnybomb.mentalmodeler.display.controlpanel
 {
+	import com.jonnybomb.mentalmodeler.CMapConstants;
 	import com.jonnybomb.mentalmodeler.display.ConceptDisplay;
 	import com.jonnybomb.mentalmodeler.display.ControlPanelDisplay;
 	import com.jonnybomb.mentalmodeler.display.INotable;
@@ -96,7 +97,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		
 		public function get selectedView():int
 		{
-			var view:int = 0;
+			var view:int = CMapConstants.GROUP_DEFAULT;
 			if (_radioGroup && _radioGroup.selectedValue)
 				view = int(_radioGroup.selectedValue);
 			return view;
