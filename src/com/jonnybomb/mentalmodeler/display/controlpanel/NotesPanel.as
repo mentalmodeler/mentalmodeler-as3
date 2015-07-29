@@ -37,7 +37,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			}
 		}
 		
-		override public function get height():Number { return _height; }
+		override public function get height():Number { return getHeight(_height); }
 		
 		override public function set enabled(value:Boolean):void
 		{

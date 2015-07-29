@@ -13,6 +13,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.filters.BevelFilter;
 	import flash.filters.BitmapFilterQuality;
 	import flash.filters.BitmapFilterType;
@@ -34,12 +35,14 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		protected static const BODY_DS:DropShadowFilter = new DropShadowFilter(3, 90, 0x000000, 1, 4, 4, 0.45, BitmapFilterQuality.MEDIUM, true);
 		
 		private var _enabled:Boolean = true;
+		private var _collapsed:Boolean = false;
 		protected var _minHeight:Number = -1;
 		protected var _maxHeight:Number = -1;
 		protected var _controlPanel:ControlPanelDisplay;
 		protected var _title:String;
 		protected var _tf:TextField;
 		protected var _header:Sprite;
+		protected var _chevron:Sprite;
 		protected var _body:Sprite;
 		protected var _cover:Sprite;
 		protected var _width:int;
@@ -75,6 +78,22 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			return out;
 		}
 		
+		public function get collapsed():Boolean {
+			return _collapsed;
+		}
+		
+		override public function get height():Number {
+			var h:Number = _collapsed ? _header.height : _body.height ;
+			//trace(this+" get height, h:"+h+", _collapsed:"+_collapsed+", _body.height:"+_body.height);
+			return h;
+		}
+		
+		public function getHeight(_h:Number = 0):Number {
+			var h:Number = _collapsed ? _header.height : _h > 0 ? _h : super.height;
+			//trace(this+" getHeight, h:"+h+", _collapsed:"+_collapsed);
+			return h;
+		}
+		
 		public function get enabled():Boolean { return _enabled; }
 		public function set enabled(value:Boolean):void
 		{
@@ -98,6 +117,27 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			_body.width = _cover.width = _width;
 		}
 		
+		private function onHeaderClick(e:MouseEvent):void {
+			toggle();
+			//trace("height:"+height+", _header.height:"+_header.height);
+			_controlPanel.updateLayout();
+		}
+		
+		private function toggle():void {
+			if ( _collapsed ) {
+				_chevron.rotation = 90;
+				scrollRect = null;
+			} else {
+				_chevron.rotation = 0;
+				scrollRect = new Rectangle(0, 0, width, _header.height);
+			}
+			//trace('BEFORE _collapsed:'+_collapsed);
+			_collapsed = !_collapsed;
+			//trace(this+' _collapsed:'+_collapsed);
+			//trace('AFTER _collapsed:'+_collapsed);
+			
+		}
+		
 		public function init():void
 		{
 			_body = addChild(new Sprite()) as Sprite;
@@ -108,13 +148,31 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			
 			// draw header
 			_header = addChild(new Sprite()) as Sprite;
-			DrawingUtil.drawRect(_header, _width, HEADER_HEIGHT, HEADER_CD);
+			DrawingUtil.drawRect(_header, _width, HEADER_HEIGHT, HEADER_CD);	
+			_header.addEventListener(MouseEvent.CLICK, onHeaderClick, false, 0, true); 
+			_header.buttonMode = true;
 			
 			var line:Shape = addChild(createHeaderLine(new Rectangle(0, 0, _width, 2))) as Shape;
 			line = addChild(createHeaderLine(new Rectangle(0, 0, _width, 1))) as Shape;
 			line.filters = [];
 			line.y = HEADER_HEIGHT - 1;
 			
+			// draw chevron
+			_chevron = addChild(new Sprite()) as Sprite;
+			_chevron.mouseEnabled = false;
+			var w:int = 8;
+			var h:int = 9;
+			var g:Graphics = _chevron.graphics;
+			g.beginFill(0xffffff);
+			g.moveTo( -w/2, -h/2 );
+			g.lineTo( -w/2,  h/2 );
+			g.lineTo( w/2, 0 );
+			g.lineTo( -w/2, -h/2 );
+			g.endFill();
+			var adjX:int = 4;
+			_chevron.y = (_header.height - _chevron.height)/2 + h/2;
+			_chevron.x = Math.min(_chevron.y, Math.round(w/2) + adjX);
+			_chevron.rotation = 90;
 			
 			// draw title
 			var props:Object = {color: 0xFFFFFF,
@@ -125,7 +183,9 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 								autoSize: TextFieldAutoSize.LEFT
 								};
 			_tf = addChild(CMapUtils.createTextField(_title, props)) as TextField;
-			_tf.x = _tf.y = (_header.height - _tf.height)/2;
+			_tf.mouseEnabled = false;
+			_tf.y = (_header.height - _tf.height)/2;
+			_tf.x = _chevron.x + adjX;
 		}
 		
 		protected function createBg(rect:Rectangle, color:uint = 0xF2F2F2):Sprite

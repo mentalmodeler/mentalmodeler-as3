@@ -83,7 +83,8 @@ package com.jonnybomb.mentalmodeler.display
 			for each (panel in _panels)
 				if (panel.enabled && panel != _notesPanel) notesHeight -= panel.height
 			
-			_notesPanel.setSize(_width, notesHeight);
+			if ( !_notesPanel.collapsed )
+				_notesPanel.setSize(_width, notesHeight);
 			
 			var nY:int = 0;
 			for each (panel in _panels)
@@ -91,7 +92,7 @@ package com.jonnybomb.mentalmodeler.display
 				if (panel.enabled)
 				{
 					panel.y = nY;
-					//("\tpanel:"+panel+", panel.enabled:"+panel.enabled+", panel.y:"+panel.y+", panel.height:"+panel.height);
+					//trace("\tpanel:"+panel+", panel.enabled:"+panel.enabled+", panel.y:"+panel.y+", panel.height:"+panel.height);
 					nY += panel.height;
 				}
 			}

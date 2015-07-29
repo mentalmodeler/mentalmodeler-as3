@@ -54,7 +54,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			_resetWidth = Math.round(w * 0.6);
 		}
 		
-		override public function get height():Number { return _cover.height; }
+		override public function get height():Number { return getHeight(_cover.height); }
 		
 		override public function init():void
 		{

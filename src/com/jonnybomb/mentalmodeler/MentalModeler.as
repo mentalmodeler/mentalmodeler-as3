@@ -30,7 +30,7 @@ package com.jonnybomb.mentalmodeler
 	
 	public class MentalModeler extends Sprite // implements IInteractiveObject, IInteractiveObjectV2
 	{
-		public static const IN_SUITE:Boolean = false;
+		public static const IN_SUITE:Boolean = true;//false;
 		public static const FULL_SCREEN:Boolean = true;//true;
 		public static const MMP:String = '../mmp/fish_wetland_groups.mmp';
 		

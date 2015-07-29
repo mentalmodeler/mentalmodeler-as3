@@ -28,7 +28,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			_maxHeight = 80;
 		}
 		
-		override public function get height():Number { return _height; }
+		override public function get height():Number { return getHeight(_height); }
 		
 		override public function setSize(w:Number, h:Number):void
 		{
