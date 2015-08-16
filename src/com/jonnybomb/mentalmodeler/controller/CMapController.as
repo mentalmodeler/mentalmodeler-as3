@@ -569,6 +569,7 @@ package com.jonnybomb.mentalmodeler.controller
 		
 		private function drawInfluenceLine(er:ConceptDisplay, ee:ConceptDisplay, startValue:LineValueData, setEeToOver:Boolean, notes:String = "", confidence:Number = 0 ):void
 		{
+			//trace('----- drawInfluenceLine, startValue:'+startValue+', setEeToOver:'+setEeToOver);
 			var line:InfluenceLineDisplay;
 			if (!isAlreadyInfluencedBy(ee, er))
 			{
@@ -596,8 +597,10 @@ package com.jonnybomb.mentalmodeler.controller
 				ee.setToOverState();
 				if (line && line.value.value == LineValueData.UNDEFINED_VALUE)
 				{
+					//trace('------- new line > show menu');
 					var globalPoint:Point = line.getLineValueGlobalPos(null);
 					var options:Vector.<LineValueData> = CMapConstants.LINE_VALUES;
+					this.setAsCurrentLine(line);
 					showLineValueMenu(globalPoint.x, globalPoint.y, line);
 				}
 			}
@@ -605,7 +608,7 @@ package com.jonnybomb.mentalmodeler.controller
 		
 		public function showLineValueMenu(x:Number, y:Number, /*selectedIdx:Number,*/ line:InfluenceLineDisplay = null):void
 		{
-			//trace('Controller > showLineValueMenu, line:'+line );
+			//trace('Controller > showLineValueMenu, line:'+line+', _model.curLine:'+_model.curLine );
 			
 			if (!_lineValueMenu)
 				_lineValueMenu = _container.addChild(new LineValueMenuDisplay(this)) as LineValueMenuDisplay;
@@ -690,8 +693,8 @@ package com.jonnybomb.mentalmodeler.controller
 		
 		public function setAsCurrentLine(line:InfluenceLineDisplay = null):void
 		{
-			//trace('Controller > setAsCurrentLine, line:'+line);
 			var _curLine:InfluenceLineDisplay = _model.curLine;
+			//trace('Controller > setAsCurrentLine, line:'+line+', _curLine:'+_curLine);
 			
 			//if (_curLine != null)
 				//_curLine.setAsSelected(false);
@@ -703,7 +706,7 @@ package com.jonnybomb.mentalmodeler.controller
 				_container.lines.setChildIndex(line, _container.lines.numChildren - 1);
 			}
 			_model.curLine = line;
-			//trace('     _model.curLine:'+_model.curLine);
+			//trace('          > _model.curLine:'+_model.curLine);
 		}
 		
 		private function removeAll():void

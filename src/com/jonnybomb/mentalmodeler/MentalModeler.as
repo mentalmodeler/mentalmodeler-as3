@@ -32,7 +32,7 @@ package com.jonnybomb.mentalmodeler
 	{
 		public static const IN_SUITE:Boolean = true;//false;
 		public static const FULL_SCREEN:Boolean = true;//true;
-		public static const MMP:String = '../mmp/fish_wetland_groups.mmp';
+		public static const MMP:String = ''; //'../mmp/fish_wetland_groups.mmp';
 		
 		//private var _api:IInteractiveObjectAPI;
 		private var _initCompleteCallback:Function;
@@ -101,7 +101,7 @@ package com.jonnybomb.mentalmodeler
 			
 			// check for use in permissible context
 			var permitted:Boolean = false;
-			var whitelist:Array = ['/jonnybomb/mentalmodeler','http://localhost:8080/','http://www.mentalmodeler', 'http://mentalmodeler'];  
+			var whitelist:Array = ['/jonnybomb/mentalmodeler','http://localhost:8080/','http://www.mentalmodeler', 'http://mentalmodeler', 'http://dev.mentalmodeler'];  
 			var url:String = stage.loaderInfo.url;
 			for (var i:int=0; i<whitelist.length; i++) {
 				if (url.indexOf(whitelist[i]) > -1) {

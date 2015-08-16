@@ -136,7 +136,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			}
 		
 			if (updatePanels)
-				_controlPanel.updateLayout();
+				_controlPanel.updateLayout( this );
 		}
 		
 		public function get selectedView():int

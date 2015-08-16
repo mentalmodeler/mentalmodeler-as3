@@ -9,6 +9,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 	import com.jonnybomb.mentalmodeler.utils.CMapUtils;
 	import com.jonnybomb.mentalmodeler.utils.math.MathUtil;
 	import com.jonnybomb.mentalmodeler.utils.visual.DrawingUtil;
+	import com.mincomps.data.MinCompsScrollBarConstants;
 	
 	import flash.display.Graphics;
 	import flash.display.Shape;
@@ -57,7 +58,6 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			_title = title;
 			_width = w;
 			_height = normalizeHeight(h);
-			
 			//init();
 		}
 		
@@ -120,7 +120,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		private function onHeaderClick(e:MouseEvent):void {
 			toggle();
 			//trace("height:"+height+", _header.height:"+_header.height);
-			_controlPanel.updateLayout();
+			_controlPanel.updateLayout( this );
 		}
 		
 		private function toggle():void {

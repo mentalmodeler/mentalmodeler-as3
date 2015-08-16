@@ -129,7 +129,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 			*/
 			
 			if (updatePanels)
-				_controlPanel.updateLayout();
+				_controlPanel.updateLayout( this );
 		}
 		
 		//private function getCurCd():ConceptDisplay { return _controlPanel.controller.model.curCd; }
