@@ -74,7 +74,7 @@ package com.jonnybomb.mentalmodeler.display
 			handleStageResize(null);
 		}
 		
-		public function updateLayout():void
+		public function updateLayout( fromPanel:AbstractPanel = undefined ):void
 		{
 			var panel:AbstractPanel;
 			
