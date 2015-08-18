@@ -38,7 +38,9 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		private var _enabled:Boolean = true;
 		private var _collapsed:Boolean = false;
 		protected var _minHeight:Number = -1;
+		public function get minHeight():Number { return _minHeight; };
 		protected var _maxHeight:Number = -1;
+		public function get maxHeight():Number { return _maxHeight; };
 		protected var _controlPanel:ControlPanelDisplay;
 		protected var _title:String;
 		protected var _tf:TextField;
@@ -120,10 +122,10 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		private function onHeaderClick(e:MouseEvent):void {
 			toggle();
 			//trace("height:"+height+", _header.height:"+_header.height);
-			_controlPanel.updateLayout( this );
+			_controlPanel.updateLayout( this, true );
 		}
 		
-		private function toggle():void {
+		public function toggle( collapse:Boolean = false ):void {
 			if ( _collapsed ) {
 				_chevron.rotation = 90;
 				scrollRect = null;
@@ -132,6 +134,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 				scrollRect = new Rectangle(0, 0, width, _header.height);
 			}
 			//trace('BEFORE _collapsed:'+_collapsed);
+			
 			_collapsed = !_collapsed;
 			//trace(this+' _collapsed:'+_collapsed);
 			//trace('AFTER _collapsed:'+_collapsed);

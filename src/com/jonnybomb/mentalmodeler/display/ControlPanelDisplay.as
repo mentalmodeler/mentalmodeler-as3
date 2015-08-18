@@ -74,29 +74,44 @@ package com.jonnybomb.mentalmodeler.display
 			handleStageResize(null);
 		}
 		
-		public function updateLayout( fromPanel:AbstractPanel = undefined ):void
-		{
-			var panel:AbstractPanel;
-			
-			// determine panel heights
-			var notesHeight:Number = _height;
-			for each (panel in _panels)
-				if (panel.enabled && panel != _notesPanel) notesHeight -= panel.height
-			
-			if ( !_notesPanel.collapsed )
-				_notesPanel.setSize(_width, notesHeight);
-			
+		private function getPanelsHeight():Number {
+			var h:Number = 0;
+			for each (var panel:AbstractPanel in _panels) {
+				if (panel.enabled && panel != _notesPanel) {
+					h += panel.height;
+				}
+			}
+			return h;
+		}
+		
+		public function updateLayout( fromPanel:AbstractPanel = undefined, fromUserAction:Boolean = false ):void
+		{	
+			//var canCollapse:Array = [ _notesPanel, _titlePanel, _unitsPanel, _groupPanel, _viewPanel, _confidencePanel ];			
+			var canCollapse:Array = [ _groupPanel, _viewPanel, _unitsPanel, _notesPanel  ];
+			var i:int = 0; 
+			var diff:Number = _height - ( getPanelsHeight() + _notesPanel.minHeight );
+			trace('diff:'+diff);
+			while ( diff < 0 && i < canCollapse.length ) {
+				var panel:AbstractPanel = canCollapse[ i ];
+				trace('  --panel:'+panel,', fromPanel:'+fromPanel+', fromUserAction:'+fromUserAction);
+				if ( !panel.collapsed ) {
+					if ( !(panel == fromPanel && fromUserAction) ) {
+						panel.toggle();
+						diff = _height - ( getPanelsHeight() + _notesPanel.minHeight );	
+					}
+					trace('       diff:'+diff);
+				}
+				i++;
+			}
+			_notesPanel.setSize( -1, _notesPanel.minHeight + diff );		
 			var nY:int = 0;
-			for each (panel in _panels)
-			{
-				if (panel.enabled)
-				{
+			for each (panel in _panels) {
+				if (panel.enabled) {
 					panel.y = nY;
-					//trace("\tpanel:"+panel+", panel.enabled:"+panel.enabled+", panel.y:"+panel.y+", panel.height:"+panel.height);
 					nY += panel.height;
 				}
 			}
-		}
+		}		
 		
 		private function handleStageResize(e:ControllerEvent):void
 		{

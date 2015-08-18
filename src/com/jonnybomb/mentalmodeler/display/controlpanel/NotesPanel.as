@@ -24,7 +24,7 @@ package com.jonnybomb.mentalmodeler.display.controlpanel
 		public function NotesPanel(controlPanel:ControlPanelDisplay, title:String, w:int, h:int)
 		{
 			super(controlPanel, title, w, h);
-			_minHeight = 50;
+			_minHeight = 80;
 		}
 		
 		override public function setSize(w:Number, h:Number):void
