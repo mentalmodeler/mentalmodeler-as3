@@ -90,16 +90,16 @@ package com.jonnybomb.mentalmodeler.display
 			var canCollapse:Array = [ _groupPanel, _viewPanel, _unitsPanel, _notesPanel  ];
 			var i:int = 0; 
 			var diff:Number = _height - ( getPanelsHeight() + _notesPanel.minHeight );
-			trace('diff:'+diff);
+			//trace('diff:'+diff);
 			while ( diff < 0 && i < canCollapse.length ) {
 				var panel:AbstractPanel = canCollapse[ i ];
-				trace('  --panel:'+panel,', fromPanel:'+fromPanel+', fromUserAction:'+fromUserAction);
+				//trace('  --panel:'+panel,', fromPanel:'+fromPanel+', fromUserAction:'+fromUserAction);
 				if ( !panel.collapsed ) {
 					if ( !(panel == fromPanel && fromUserAction) ) {
 						panel.toggle();
 						diff = _height - ( getPanelsHeight() + _notesPanel.minHeight );	
 					}
-					trace('       diff:'+diff);
+					//trace('       diff:'+diff);
 				}
 				i++;
 			}

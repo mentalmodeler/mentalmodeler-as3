@@ -54,7 +54,7 @@ package com.jonnybomb.mentalmodeler.display
 		{
 			var line:InfluenceLineDisplay = _controller.model.curLine;
 			var value:Number = line.influenceValue;
-			trace("LineValueMenu.show > value:"+value)		
+			//("LineValueMenu.show > value:"+value)		
 			setValue( line.influenceValue, 'both', false);
 			//trace("LineValueMenu.show > _controller.model.curLine:"+_controller.model.curLine);
 			//trace("line.influenceValue:"+line.influenceValue);
@@ -236,7 +236,7 @@ package com.jonnybomb.mentalmodeler.display
 		}		
 		
 		private function onTfButtonClick(e:MouseEvent):void {
-			trace('ontfbuttonclick');
+			//trace('ontfbuttonclick');
 			stage.focus = _valueTf;
 			var l:int = _valueTf.length;
 			_valueTf.setSelection(l, l);
