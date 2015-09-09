@@ -32,7 +32,7 @@ package com.jonnybomb.mentalmodeler
 	{
 		public static const IN_SUITE:Boolean = true;//false;
 		public static const FULL_SCREEN:Boolean = true;//true;
-		public static const MMP:String = ''; //'../mmp/fish_wetland_groups.mmp';
+		public static const MMP:String = ''; //'/Users/uelbojo/Desktop/fish_wetland.mmp'; //'../mmp/fish_wetland_groups.mmp';
 		
 		//private var _api:IInteractiveObjectAPI;
 		private var _initCompleteCallback:Function;

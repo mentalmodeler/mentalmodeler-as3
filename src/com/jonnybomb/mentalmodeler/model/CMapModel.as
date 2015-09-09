@@ -187,6 +187,7 @@ package com.jonnybomb.mentalmodeler.model
 							<group>{cd.group}</group>
 							<x>{cd.x}</x>
 							<y>{cd.y}</y>
+							<preferredState>{cd.preferredState || 0}</preferredState>
 					   </{componentNodeName}>;
 				
 				// create relationships wrapper node
@@ -223,7 +224,7 @@ package com.jonnybomb.mentalmodeler.model
 				// add this concept to concepts wrapper
 				concepts.appendChild(node);
 			}
-			
+			trace('xml:',xml);
 			return xml;
 		}
 		

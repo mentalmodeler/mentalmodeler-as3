@@ -68,6 +68,10 @@ package com.jonnybomb.mentalmodeler.display
 		public function get group():int { return _group; }
 		public function set group(value:int):void { _group = value; draw(_width, _height);}
 		
+		private var _preferredState:String = "0";
+		public function get preferredState():String { return _preferredState; }
+		public function set preferredState(value:String):void { _preferredState = value; }
+		
 		private var _notes:String = "";
 		public function get notes():String { return _notes; }
 		public function set notes(value:String):void { _notes = value; }
@@ -112,13 +116,14 @@ package com.jonnybomb.mentalmodeler.display
 			toggleButtons(true);
 		}
 		
-		public function init(idx:int = -1, title:String = "", notes:String = "", units:String = "", group:int = CMapConstants.GROUP_DEFAULT):void
+		public function init(idx:int = -1, title:String = "", notes:String = "", units:String = "", group:int = CMapConstants.GROUP_DEFAULT, preferredState:String = '0'):void
 		{
 			_idx = (idx == -1) ? creationIdx++ : idx;
 			//trace("group:"+group);
 			_group = group;
 			mouseEnabled = false;
 			filters = [CMapConstants.CD_DROP_SHADOW];
+			_preferredState = preferredState;
 			
 			_notes = notes;
 			_units = units;
